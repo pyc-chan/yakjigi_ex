@@ -8,7 +8,7 @@ public class PagingService {
     @Autowired
     private Paging paging;
     
-    public Paging PagingService(int count, String cPage, int numPerPage){
+    public Paging getPaging(int count, String cPage, int numPerPage){
         // 총 데이터 갯수
 		paging.setTotalRecord(count);
 		
@@ -29,15 +29,6 @@ public class PagingService {
 				paging.setTotalPage(paging.getTotalPage() + 1 );
 			}
 		}
-		// 총 페이지 설정
-		if(paging.getTotalPage() <= paging.getPagePerBlock()) {
-			paging.setTotalBlock(1);
-		}else {
-			paging.setTotalBlock(paging.getTotalRecord() / paging.getPagePerBlock());
-			if(paging.getTotalPage() % paging.getPagePerBlock() != 0)
-				paging.setTotalBlock(paging.getTotalBlock()+1);
-		}
-		
 		
 		// 현재 페이지 설정
 		// cpage값이 없으면

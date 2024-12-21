@@ -33,7 +33,7 @@ public class JwtUtil {
         byte[] keyBytes = secretKey.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
     }
-    
+        
     // 토큰 생성
     public String generateToken(String id) {
         Map<String, Object> claims = new HashMap<>();
@@ -75,7 +75,7 @@ public class JwtUtil {
     // 다양한 타입의 클레임을 추출할 수 있는 메서드
     // claimsResolver : 클레임을 처리하는 로직을 정의한 함수
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
-        final Claims claims = extractAllClaims(token); // 추출한 클레임을 claims에 넣는다.
+        final Claims claims = extractAllClaims(token); // 토큰에서 추출한 클레임을 claims에 넣는다.
         return claimsResolver.apply(claims); // 입력한 함수에 claims 객체를 매개변수로 T를 반환한다.
     }
     
