@@ -16,30 +16,30 @@ public class AdminServiceImpl implements AdminService{
     // 관리자 변경
     @Override
     public int putAdminUpdate(AdminVO avo) {
-        return 0;
+        return adminMapper.putAdminUpdate(avo);
     }
     
     // 관리자 생성
     @Override
     public int postAdminJoin(AdminVO avo) {
-        return 0;
+        return adminMapper.postAdminJoin(avo);
     }
     
     // 관리자 리스트
     @Override
     public List<AdminVO> getAdminList() {
-        return null;
+        return adminMapper.getAdminList();
     }
     
     // 관리자 디테일
     @Override
     public AdminVO getAdminDetail(String admin_idx) {
-        return null;
+        return adminMapper.getAdminDetail(admin_idx);
     }
     
     // 관리자 삭제
     @Override
     public int deleteAdmin(AdminVO avo) {
-        return 0;
+        return adminMapper.deleteAdmin(avo);
     }
 }

@@ -16,6 +16,11 @@ public interface UserMapper {
     public void insertUserByProvider(UserVO mvo);
     
     // 일반 회원 join
-    public int getMembersJoin(UserVO mvo);
+    public int getUserJoin(UserVO mvo);
     
+    // 
+    public UserVO getUserDetail(String user_id);
+    
+    // 비밀번호 체크
+    public String getUserPassWord(String user_id);
 }
