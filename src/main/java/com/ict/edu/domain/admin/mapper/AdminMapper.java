@@ -1,0 +1,26 @@
+package com.ict.edu.domain.admin.mapper;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Mapper;
+
+import com.ict.edu.domain.auth.vo.AdminVO;
+
+@Mapper
+public interface AdminMapper {
+    
+    // 관리자 리스트
+    List<AdminVO> getAdminList();
+    
+    // 관리자 디테일
+    AdminVO getAdminDetail(String admin_idx);
+    
+    // 관리자 생성
+    int postAdminJoin(AdminVO avo);
+    
+    // 관리자 변경
+    int putAdminUpdate(AdminVO avo);
+    
+    // 관리자 삭제
+    int deleteAdmin(AdminVO avo);
+}
