@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace는 반드시 mapper 위치로 설정해야 된다. -->
+<mapper namespace="com.ict.edu.domain.comment.mapper.CommentMapper">
+    <!-- 댓글 리스트 -->
+	<select id="getCommentList"  parameterType="map" resultType="CommentVO">
+		select * from board_db.comment_tbl 
+        where comment_board = #{comment_board}
+        <if test="comment_board == 'notice'">
+            and notice_idx = #{notice_idx}
+        </if>
+        <if test="comment_board == 'qna'">
+            and qna_idx = #{qna_idx}
+        </if>
+	</select>
+    
+    <!-- 댓글 작성 -->
+    <insert id="postCommentJoin" parameterType="CommentVO">
+        insert into board_db.comment_tbl(
+            <if test="user_idx != null">
+                user_idx,
+            </if>
+            <if test="admin_idx != null">
+                admin_idx,
+            </if>
+            comment_content,
+            comment_reg_date,
+            comment_board,
+            <!-- comment_file, -->
+            <if test="comment_file_name != null">
+                comment_file_name,
+            </if>
+            <if test="notice_idx != null">
+                notice_idx
+            </if>
+            <if test="qna_idx != null">
+                qna_idx
+            </if>
+        )
+        values(
+            <if test="user_idx != null">
+                #{user_idx},
+            </if>
+            <if test="admin_idx != null">
+                #{admin_idx},
+            </if>
+            #{comment_content},
+            date(NOW()),
+            #{comment_board},
+            <!-- comment_file, -->
+            <if test="comment_file_name != null">
+                #{comment_file_name},
+            </if>
+            <if test="notice_idx != null">
+                #{notice_idx}
+            </if>
+            <if test="qna_idx != null">
+                #{qna_idx}
+            </if>
+        )
+    </insert>
+    
+    <update id="putCommentUpdate" parameterType="CommentVO">
+        update board_db.comment_tbl 
+        <set> 
+            comment_update=1, 
+            comment_content = #{comment_content}, 
+            <!-- <if test="comment_file != null"> -->
+                <!-- comment_file = #{comment_file} -->
+            <!-- </if> -->
+            <if test="comment_file_name != null">
+                comment_file_name = #{comment_file_name}
+            </if>
+        </set>
+        where comment_idx = #{comment_idx}
+        
+    </update>
+    
+    <update id="putCommentDelete" parameterType="CommentVO">
+        update board_db.comment_tbl
+        <set>
+            comment_delete = 1
+        </set>
+        where comment_idx = #{comment_idx}
+    </update>
+    
+</mapper>
+

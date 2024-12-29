@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace는 반드시 mapper 위치로 설정해야 된다. -->
+<mapper namespace="com.ict.edu.domain.admin.mapper.AdminMapper">
+	<!-- <select id="selectMember"  parameterType="String" resultType="UserVO">
+		select * from user_db.user_tbl where user_id = #{user_id}
+	</select> -->
+    
+    <select id="getAdminList" resultType="AdminVO">
+        select * from admin_db.admin_info_tbl
+    </select>
+    
+    <select id="getAdminDetail" parameterType="String" resultType="AdminVO">
+        select * from admin_db.admin_info_tbl where admin_idx = #{admin_idx}
+    </select>
+    
+    
+</mapper>
