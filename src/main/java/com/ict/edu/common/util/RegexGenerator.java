@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 import java.security.SecureRandom;
 import java.util.regex.Matcher;
 
-public class ReqexGenerator {
+public class RegexGenerator {
     // 영어 대문자
     private final String UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     // 영어 소문자

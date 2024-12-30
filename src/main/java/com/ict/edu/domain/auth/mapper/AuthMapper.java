@@ -7,5 +7,5 @@ import com.ict.edu.domain.auth.vo.UserVO;
 
 @Mapper
 public interface AuthMapper {
-    UserVO selectMember(@Param("user_id") String user_id);
+    UserVO selectMember(@Param("username") String user_id);
 } 

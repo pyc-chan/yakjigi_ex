@@ -35,18 +35,18 @@ public class JwtUtil {
     }
     
     // 토큰 생성
-    public String generateToken(String id) {
+    public String generateToken(String user_id) {
         Map<String, Object> claims = new HashMap<>();
-        return generateToken(id, claims);
+        return generateToken(user_id, claims);
     }
     // 클레임이란 JWT에 담길 정보로 사용자권한, 역할등 관련정보를 담는다.
     // 다만 보안이 취약하니 민감한 개인정보는 담지 않는다.
     
     // 토큰 생성 오버라이드
-    public String generateToken(String username, Map<String, Object> claims){
+    public String generateToken(String user_id, Map<String, Object> claims){
         return Jwts.builder() // JWT 생성하는 빌더 객체
                 .setClaims(claims) // JWT에 포함될 클레임
-                .setSubject(username) // JWT의 주체를 설정하는것으로 고유 식별자를 나타냄
+                .setSubject(user_id) // JWT의 주체를 설정하는것으로 고유 식별자를 나타냄
                 .setIssuedAt(new Date()) // JWT가 발급된 시간을 설정한다.
                 .setExpiration(new Date(System.currentTimeMillis()+expiration)) // JWT의 만료시간을 설정한다.
                 .signWith(getKey(), SignatureAlgorithm.HS256) // JWT에 서명을 추가하는데 getKey는 JWT의 무결성을 보장한다.

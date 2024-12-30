@@ -57,7 +57,11 @@ public class SecurityConfig {
                 // url 접근 권한 설정
                 .authorizeHttpRequests(authorize -> authorize
                     // 인증 없이 접근
-                    .requestMatchers("/api/**", "/", "/login", "/faq", "/download", "/join", "/findpw", "/findid").permitAll()
+                    .requestMatchers(
+                        "/api/**", "/", "/login", 
+                        "/fna", "/download", "/join", 
+                        "/findpw", "/findid")
+                        .permitAll()
                     // 인증 필요
                     .requestMatchers("/admin/**").hasAnyAuthority("admin", "super")
                     .anyRequest().authenticated())

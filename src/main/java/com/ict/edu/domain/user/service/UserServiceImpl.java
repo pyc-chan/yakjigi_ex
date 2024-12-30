@@ -19,8 +19,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public int putUserNickName(UserVO uvo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'putUserNickName'");
+        return userMapper.putUserNickName(uvo);
     }
 
     @Override
