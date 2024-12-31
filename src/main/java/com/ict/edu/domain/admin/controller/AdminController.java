@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ict.edu.domain.admin.service.AdminService;
+import com.ict.edu.domain.auth.vo.UserVO;
+import com.ict.edu.domain.user.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,10 +23,13 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
     
-    @GetMapping("/")
-    public List<Object> getAdminHome() {
-        List<Object> list = new ArrayList();
-        
+    @Autowired
+    private UserService userService;
+    
+    
+    @GetMapping("/userlist")
+    public List<UserVO> getUserList() {
+        List<UserVO> list = adminService.getUserList();
         return list;
     }
     

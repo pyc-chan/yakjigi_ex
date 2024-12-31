@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.ict.edu.domain.comment.mapper.CommentMapper;
 import com.ict.edu.domain.comment.vo.CommentVO;
-import com.ict.edu.domain.comment.vo.CommentVO.CommentBoard;
+import com.ict.edu.domain.comment.vo.CommentVO.Comment_board;
 
 @Service
 public class CommentServiceImpl implements CommentService{
@@ -17,7 +17,7 @@ public class CommentServiceImpl implements CommentService{
     private CommentMapper commentMapper;
     
     @Override
-    public List<CommentVO> getCommentList(CommentBoard comment_board, String idx) {
+    public List<CommentVO> getCommentList(Comment_board comment_board, String idx) {
         Map<String, String> map = new HashMap<String, String>();
         map.put("comment_board", comment_board.getBoard());
         if(comment_board.getBoard() == "Notice"){

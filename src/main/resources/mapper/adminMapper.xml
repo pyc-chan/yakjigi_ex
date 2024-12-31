@@ -5,17 +5,68 @@
 
 <!-- namespace는 반드시 mapper 위치로 설정해야 된다. -->
 <mapper namespace="com.ict.edu.domain.admin.mapper.AdminMapper">
-	<!-- <select id="selectMember"  parameterType="String" resultType="UserVO">
-		select * from user_db.user_tbl where user_id = #{user_id}
-	</select> -->
-    
+	
+    <!-- admin 리스트 -->
     <select id="getAdminList" resultType="AdminVO">
         select * from admin_db.admin_info_tbl
     </select>
     
+    <!-- admin 상세정보 -->
     <select id="getAdminDetail" parameterType="String" resultType="AdminVO">
         select * from admin_db.admin_info_tbl where admin_idx = #{admin_idx}
     </select>
+    
+    <!-- admin 생성 -->
+    <insert id="postAdminJoin" parameterType="AdminVO">
+        insert into admin_db.admin_info_tbl(
+            <!-- not null인 경우 -->
+            admin_id,
+            admin_level_idx,
+            admin_pw,
+            admin_profile,
+            admin_name,
+            admin_nickname,
+            admin_email,
+            admin_phone,
+            admin_out
+        )
+        values(
+            #{admin_id},
+            #{admin_level_idx},
+            #{admin_pw},
+            #{admin_profile},
+            #{admin_name},
+            #{admin_nickname},
+            #{admin_email},
+            #{admin_phone},
+            #{admin_out}
+        )
+    </insert>
+    
+    <update id="putAdminUpdate" parameterType="AdminVO">
+        update admin_db.admin_info_tbl 
+        set
+            admin_id = #{admin_id},
+            admin_level_idx = #{admin_level_idx},
+            admin_pw = #{admin_pw},
+            admin_profile = #{admin_profile},
+            admin_name = #{admin_name},
+            admin_nickname = #{admin_nickname},
+            admin_email = #{admin_email},
+            admin_phone = #{admin_phone},
+            admin_out = #{admin_out}
+        where admin_idx = #{admin_idx}
+    </update>
+    
+    <delete id="deleteAdmin" parameterType="AdminVO">
+        delete from admin_db.admin_info_tbl
+        where admin_idx = #{admin_idx}
+    </delete>
+    
+    <select id="getUserList" resultType="UserVO">
+        select * from user_db.user_info_db order by desc
+    </select>
+    
     
     
 </mapper>

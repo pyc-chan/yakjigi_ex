@@ -18,16 +18,16 @@ public class CommentVO {
     private String comment_file_name;
     private String notice_idx;
     private String qna_idx;
-    private CommentBoard comment_board;
+    private Comment_board comment_board;
     
     
-    public enum CommentBoard{
+    public enum Comment_board{
         NOTICE("Notice"),
         QNA("Qna");
         
         private String board;
         
-        CommentBoard(String board){
+        Comment_board(String board){
             this.board = board;
         }
         

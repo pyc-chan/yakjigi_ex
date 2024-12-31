@@ -7,7 +7,7 @@ import com.ict.edu.domain.comment.vo.CommentVO;
 public interface CommentService {
     // 댓글 리스트(게시판 종류, 게시판 idx)
     // 게시판 종류는 Enum형임!
-    List<CommentVO> getCommentList(CommentVO.CommentBoard comment_board, String idx);
+    List<CommentVO> getCommentList(CommentVO.Comment_board comment_board, String idx);
     
     // 댓글 작성
     int postCommentJoin(CommentVO comvo);

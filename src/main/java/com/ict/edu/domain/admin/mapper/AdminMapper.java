@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ict.edu.domain.auth.vo.AdminVO;
+import com.ict.edu.domain.auth.vo.UserVO;
 
 @Mapper
 public interface AdminMapper {
@@ -23,4 +24,7 @@ public interface AdminMapper {
     
     // 관리자 삭제
     int deleteAdmin(AdminVO avo);
+    
+    // 유저 리스트
+    List<UserVO> getUserList();
 }

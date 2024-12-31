@@ -3,6 +3,7 @@ package com.ict.edu.domain.admin.service;
 import java.util.List;
 
 import com.ict.edu.domain.auth.vo.AdminVO;
+import com.ict.edu.domain.auth.vo.UserVO;
 
 
 public interface AdminService {
@@ -20,5 +21,8 @@ public interface AdminService {
     
     // 관리자 삭제
     int deleteAdmin(AdminVO avo);
+    
+    // 유저 리스트
+    List<UserVO> getUserList();
     
 }

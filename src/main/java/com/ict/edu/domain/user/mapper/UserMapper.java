@@ -18,7 +18,7 @@ public interface UserMapper {
     // 일반 회원 join
     public int getUserJoin(UserVO mvo);
     
-    // 
+    // 유저 디테일
     public UserVO getUserDetail(String user_id);
     
     // 비밀번호 체크

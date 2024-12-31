@@ -24,6 +24,7 @@ public class UserDetailService implements UserDetailsService{
     @Autowired
     private UserMapper userMapper;
     
+    // 아이디로 찾기
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         UserVO member = authMapper.selectMember(username);
@@ -34,14 +35,11 @@ public class UserDetailService implements UserDetailsService{
     }
     
     // DB에서 개인 정보 추출,
-    
-    
     public UserVO getUserDetail(String user_id) {
         return authMapper.selectMember(user_id);
     }
-
-    // UserDetails userDetails = userDetailService.loadUserByOAuth2User(oAuth2User,
-    // provider);
+    
+    
     public UserDetails loadUserByOAuth2User(OAuth2User oAuth2User, String provider) {
         String email = oAuth2User.getAttribute("email");
         String name = oAuth2User.getAttribute("name");

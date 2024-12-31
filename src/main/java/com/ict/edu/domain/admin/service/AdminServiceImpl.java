@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ict.edu.domain.admin.mapper.AdminMapper;
 import com.ict.edu.domain.auth.vo.AdminVO;
+import com.ict.edu.domain.auth.vo.UserVO;
 
 @Service
 public class AdminServiceImpl implements AdminService{
@@ -42,4 +43,11 @@ public class AdminServiceImpl implements AdminService{
     public int deleteAdmin(AdminVO avo) {
         return adminMapper.deleteAdmin(avo);
     }
+    
+    // 유저 목록
+    @Override
+    public List<UserVO> getUserList() {
+        return adminMapper.getUserList();
+    }
+
 }
