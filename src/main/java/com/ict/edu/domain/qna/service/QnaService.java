@@ -19,4 +19,7 @@ public interface QnaService {
     
     // 문의 삭제(실제로는 update)
     int putQnaDelete(QnaVO qvo);
+    
+    // 답변 안된 리스트
+    List<QnaVO> getNoAnswerList();
 }

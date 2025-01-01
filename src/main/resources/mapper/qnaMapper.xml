@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace는 반드시 mapper 위치로 설정해야 된다. -->
+<mapper namespace="com.ict.edu.domain.qna.mapper.QnaMapper">
+	
+    <select id="getQnaList" resultType="QnaVO">
+        select * from board_db.qna_tbl order by desc
+    </select>
+    
+    <select id="getQnaDetail" resultType="QnaVO" parameterType="string">
+        select * from board_db.qna_tbl where qna_idx = #{qna_idx}
+    </select>
+    
+    int postQnaJoin(QnaVO qvo);
+    
+    int putQnaUpdate(QnaVO qvo);
+    
+    int putQnaDelete(QnaVO qvo);
+    
+    List<QnaVO> getNoAnswerList();
+    
+    
+</mapper>
+

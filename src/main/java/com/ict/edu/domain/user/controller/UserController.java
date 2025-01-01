@@ -1,6 +1,8 @@
 package com.ict.edu.domain.user.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,12 +14,17 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 @Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserController {
+    
+    @Value("${file.upload-dir}")
+    private String uploadDir;
+    
     
     @Autowired
     private UserService userService;
@@ -46,8 +53,10 @@ public class UserController {
     }
     
     // 프로필 사진 수정
+    @PutMapping("/profile")
     DataVO putUserProfile(UserVO uvo){
         DataVO response = new DataVO();
+        
         if(userService.putUserProfile(uvo)>0){
             log.info("프로필 수정 성공");
             response.setSuccess(true);
@@ -61,6 +70,7 @@ public class UserController {
     }
     
     // 이름 수정
+    @PutMapping("/name")
     DataVO putUserName(UserVO uvo){
         DataVO response = new DataVO();
         if(userService.putUserName(uvo)>0){
@@ -76,6 +86,7 @@ public class UserController {
     }
     
     // 성별 수정
+    @PutMapping("/gender")
     DataVO putUserGender(UserVO uvo){
         DataVO response = new DataVO();
         if(userService.putUserGender(uvo)>0){
@@ -91,6 +102,7 @@ public class UserController {
     }
     
     // 휴대전화 번호 수정
+    @PutMapping("/phone")
     DataVO putUserPhone(UserVO uvo){
         DataVO response = new DataVO();
         if(userService.putUserPhone(uvo)>0){
@@ -106,11 +118,25 @@ public class UserController {
     }
     
     // 비밀번호 수정 
-    DataVO putUserPassWord(UserVO uvo){
+    @PutMapping("/password")
+    DataVO putUserPassWord(UserVO uvo, @RequestBody String user_new_pw){
         DataVO response = new DataVO();
-        
-        
-        
+        String password = userService.getUserPassWord(uvo.getUser_id());
+        if(BCrypt.checkpw(uvo.getPassword(), password)){
+            password = BCrypt.hashpw(user_new_pw, BCrypt.gensalt());
+            uvo.setUser_pw(password);
+            if(userService.putUserPassWord(uvo)>0){
+                response.setMessage("비밀번호 변경 성공");
+                response.setSuccess(true);
+                response.setData(uvo);
+            }else{
+                response.setSuccess(false);
+                response.setMessage("비밀번호 변경 실패");
+            }
+        }else{
+            response.setSuccess(false);
+            response.setMessage("현재 비밀번호가 틀렸습니다.");
+        }
         return response;
     }
     

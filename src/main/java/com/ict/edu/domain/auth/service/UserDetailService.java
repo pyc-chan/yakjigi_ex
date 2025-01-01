@@ -34,7 +34,7 @@ public class UserDetailService implements UserDetailsService{
         return new User(member.getUser_id(), member.getPassword(), new ArrayList<>());
     }
     
-    // DB에서 개인 정보 추출,
+    // DB에서 개인 정보 추출
     public UserVO getUserDetail(String user_id) {
         return authMapper.selectMember(user_id);
     }

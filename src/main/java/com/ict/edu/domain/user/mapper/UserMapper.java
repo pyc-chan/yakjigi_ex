@@ -24,5 +24,6 @@ public interface UserMapper {
     // 비밀번호 체크
     public String getUserPassWord(String user_id);
     
+    // 닉네임 변경
     public int putUserNickName(UserVO uvo);
 }

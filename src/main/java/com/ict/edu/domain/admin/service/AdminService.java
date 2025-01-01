@@ -25,4 +25,6 @@ public interface AdminService {
     // 유저 리스트
     List<UserVO> getUserList();
     
+    
+    
 }
