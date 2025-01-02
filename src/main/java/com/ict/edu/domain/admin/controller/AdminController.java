@@ -47,8 +47,8 @@ public class AdminController {
     
     @GetMapping("/qna_no_answer")
     public List<QnaVO> getNoAnswerList() {
-        List<QnaVO> list = qnaService.get
-        return ;
+        List<QnaVO> list = qnaService.getNoAnswerList();
+        return list;
     }
     
 }

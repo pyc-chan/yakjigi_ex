@@ -33,13 +33,8 @@ public class QnaServiceImpl implements QnaService{
     }
 
     @Override
-    public int putQnaDelete(QnaVO qvo) {
-        return qnaMapper.putQnaDelete(qvo);
-    }
-
-    @Override
     public List<QnaVO> getNoAnswerList() {
         return qnaMapper.getNoAnswerList();
     }
-    
+
 }

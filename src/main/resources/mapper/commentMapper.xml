@@ -9,10 +9,10 @@
 	<select id="getCommentList"  parameterType="map" resultType="CommentVO">
 		select * from board_db.comment_tbl 
         where comment_board = #{comment_board}
-        <if test="comment_board == 'notice'">
+        <if test="comment_board eq 'notice'">
             and notice_idx = #{notice_idx}
         </if>
-        <if test="comment_board == 'qna'">
+        <if test="comment_board eq 'qna'">
             and qna_idx = #{qna_idx}
         </if>
 	</select>
@@ -67,12 +67,12 @@
         update board_db.comment_tbl 
         <set> 
             comment_update=1, 
-            comment_content = #{comment_content}, 
+            comment_content = #{comment_content}
             <!-- <if test="comment_file != null"> -->
                 <!-- comment_file = #{comment_file} -->
             <!-- </if> -->
             <if test="comment_file_name != null">
-                comment_file_name = #{comment_file_name}
+                , comment_file_name = #{comment_file_name}
             </if>
         </set>
         where comment_idx = #{comment_idx}
