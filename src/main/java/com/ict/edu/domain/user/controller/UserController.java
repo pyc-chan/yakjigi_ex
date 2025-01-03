@@ -13,6 +13,7 @@ import com.ict.edu.domain.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -141,9 +142,10 @@ public class UserController {
     }
     
     // 회원가입
+    @PostMapping("/insert")
     DataVO postUserJoin(UserVO uvo){
         DataVO response = new DataVO();
-        if(userService.putUserName(uvo)>0){
+        if(userService.postUserJoin(uvo)>0){
             log.info("이름 수정 성공");
             response.setSuccess(true);
             response.setMessage("이름이 성공적으로 수정되었습니다.");

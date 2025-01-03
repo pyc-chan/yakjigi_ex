@@ -6,24 +6,26 @@ import com.ict.edu.domain.auth.vo.UserVO;
 
 @Mapper
 public interface UserMapper {
-    // 로그인시 
-    public UserVO getUsersById(String user_id);
-    
-    // sns 확인
-    public UserVO findUserByProvider(UserVO uvo);
-    
-    // sns 로그인 join
-    public void insertUserByProvider(UserVO mvo);
-    
-    // 일반 회원 join
-    public int getUserJoin(UserVO mvo);
-    
-    // 유저 디테일
-    public UserVO getUserDetail(String user_id);
-    
-    // 비밀번호 체크
-    public String getUserPassWord(String user_id);
     
     // 닉네임 변경
     public int putUserNickName(UserVO uvo);
+    
+    // 프로필 사진 수정
+    public int putUserProfile(UserVO uvo);
+    
+    // 이름 수정
+    public int putUserName(UserVO uvo);
+    
+    // 성별 수정
+    public int putUserGender(UserVO uvo);
+    
+    // 휴대전화 번호 수정
+    public int putUserPhone(UserVO uvo);
+    
+    // 비밀번호 수정
+    int putUserPassWord(UserVO uvo);
+    
+    // 회원가입
+    int postUserJoin(UserVO uvo);
+    
 }

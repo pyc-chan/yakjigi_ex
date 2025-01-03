@@ -10,9 +10,9 @@ public class RegexGenerator {
     // 영어 소문자
     private final String LOWER = "abcdefghijklmnopqrstuvwxyz";
     // 숫자
-    private final String DIGITS = "0123456789";
+    private final String DIGITS = "01234567890123456789";
     // 특수문자
-    private final String SPECIAL = "!@#$%^&*()-_=+[]{}|;:,.<>?";
+    private final String SPECIAL = "!@#$%^&*!@#$%^&*!@#$%^&*";
     
     private final String ALL_CHARACTERS = UPPER + LOWER + DIGITS + SPECIAL;
     
@@ -34,7 +34,7 @@ public class RegexGenerator {
         StringBuilder sb = new StringBuilder();
         String result;
         while (true) {
-            int randomnumber = random.nextInt(8,16);
+            int randomnumber = random.nextInt(10,16);
             sb.setLength(0);
             for(int i = 0; i<randomnumber; i++){
                 int randomint = random.nextInt(ALL_CHARACTERS.length());

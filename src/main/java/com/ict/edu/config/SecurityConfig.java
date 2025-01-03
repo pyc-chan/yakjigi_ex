@@ -60,7 +60,7 @@ public class SecurityConfig {
                     .requestMatchers(
                         "/api/**", "/", "/login", 
                         "/fna", "/download", "/join", 
-                        "/findpw", "/findid")
+                        "/findpw", "/findid", "/auth")
                         .permitAll()
                     // 인증 필요
                     .requestMatchers("/admin/**").hasAnyAuthority("admin", "super")

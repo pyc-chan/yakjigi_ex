@@ -3,6 +3,7 @@ package com.ict.edu.domain.user.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ict.edu.domain.auth.mapper.AuthMapper;
 import com.ict.edu.domain.auth.vo.UserVO;
 import com.ict.edu.domain.user.mapper.UserMapper;
 
@@ -12,9 +13,12 @@ public class UserServiceImpl implements UserService{
     @Autowired
     private UserMapper userMapper;
     
+    @Autowired
+    private AuthMapper authMapper;
+    
     @Override
     public UserVO getUserDetail(String user_id) {
-        return userMapper.getUserDetail(user_id);
+        return authMapper.getUserDetail(user_id);
     }
 
     @Override
@@ -24,43 +28,37 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public int putUserProfile(UserVO uvo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'putUserProfile'");
+        return userMapper.putUserProfile(uvo);
     }
 
     @Override
     public int putUserName(UserVO uvo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'putUserName'");
+        return userMapper.putUserName(uvo);
     }
 
     @Override
     public int putUserGender(UserVO uvo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'putUserGender'");
+        return userMapper.putUserGender(uvo);
     }
 
     @Override
     public int putUserPhone(UserVO uvo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'putUserPhone'");
+        return userMapper.putUserPhone(uvo);
     }
 
     @Override
     public int putUserPassWord(UserVO uvo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'putUserPassWord'");
+        return putUserPassWord(uvo);
     }
 
     @Override
     public int postUserJoin(UserVO uvo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'postUserJoin'");
+        return postUserJoin(uvo);
     }
 
     @Override
     public String getUserPassWord(String user_id) {
-        return userMapper.getUserPassWord(user_id);
+        return authMapper.getUserPassWord(user_id);
     }
     
 }

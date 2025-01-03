@@ -65,6 +65,7 @@ public class UserVO implements UserDetails{
     private List<GrantedAuthority> authorities = new ArrayList<>();
     
     
+    // userdetaile 상속
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;

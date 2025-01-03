@@ -14,32 +14,30 @@ import org.springframework.stereotype.Service;
 import com.ict.edu.common.util.RegexGenerator;
 import com.ict.edu.domain.auth.mapper.AuthMapper;
 import com.ict.edu.domain.auth.vo.UserVO;
-import com.ict.edu.domain.user.mapper.UserMapper;
 
 
 @Service
 public class UserDetailService implements UserDetailsService{
     @Autowired
     private AuthMapper authMapper;
-    @Autowired
-    private UserMapper userMapper;
     
     // 아이디로 찾기
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserVO member = authMapper.selectMember(username);
-        if (member == null) {
+        UserVO uvo = authMapper.getUserDetail(username);
+        if (uvo == null) {
             throw new UsernameNotFoundException("없는 아이디 입니다.");
         }
-        return new User(member.getUser_id(), member.getPassword(), new ArrayList<>());
+        return new User(uvo.getUser_id(), uvo.getPassword(), new ArrayList<>());
     }
     
     // DB에서 개인 정보 추출
     public UserVO getUserDetail(String user_id) {
-        return authMapper.selectMember(user_id);
+        return authMapper.getUserDetail(user_id);
     }
     
     
+    // sns유저
     public UserDetails loadUserByOAuth2User(OAuth2User oAuth2User, String provider) {
         String email = oAuth2User.getAttribute("email");
         String name = oAuth2User.getAttribute("name");
@@ -72,16 +70,19 @@ public class UserDetailService implements UserDetailsService{
         }
         if(uvo != null){
             // 아이디가 존재하면 DB에 있는 것, 아니면 DB에 없는 것
-            UserVO uvo2 = userMapper.findUserByProvider(uvo);
+            UserVO uvo2 = authMapper.findUserByProvider(uvo);
             if (uvo2 == null) {
                 RegexGenerator reqexGenerator = new RegexGenerator();
                 // 비밀번호 정규식으로 랜덤 생성 후 해싱
                 String pw = BCrypt.hashpw(reqexGenerator.getRandomReqex(), BCrypt.gensalt());
                 uvo.setUser_pw(pw);
-                userMapper.insertUserByProvider(uvo);
+                authMapper.insertUserByProvider(uvo);
             }
         }
         return new User(uvo.getUser_id(), "", new ArrayList<>());
     }
+    
+    // 일반 유저 회원가입
+    
 }
 

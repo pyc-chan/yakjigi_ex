@@ -5,8 +5,82 @@
 
 <!-- namespace는 반드시 mapper 위치로 설정해야 된다. -->
 <mapper namespace="com.ict.edu.domain.auth.mapper.AuthMapper">
-	<select id="selectMember"  parameterType="String" resultType="UserVO">
+	<select id="getUserDetail"  parameterType="String" resultType="UserVO">
 		select * from user_db.user_tbl where user_id = #{user_id}
+	</select>
+	
+	<select id="getUserById" parameterType="String" resultType="UserVO">
+        select * from user_db.user_info_tbl where user_id = #{user_id}
+    </select>
+    
+    <select id="findUserByProvider" parameterType="UserVO" resultType="UserVO">
+        select * from user_db.user_info_tbl
+        where  
+		(
+            (provider = 'kakao' and user_kakao = #{user_kakao})
+		OR
+            (provider = 'naver' and user_naver = #{user_naver})
+        OR
+            (provider = 'google' and user_google = #{user_google})
+		)
+    </select>
+    
+    <insert id="insertUserByProvider" parameterType="UserVO">
+        insert into user_db.user_info_tbl(
+            user_id,
+            user_pw,
+            user_name,
+            <if test="user_age != null">
+			user_age, 
+			</if>
+			<if test="user_kakao != null">
+			user_kakao, 
+			</if>
+			<if test="user_naver != null">
+			user_naver, 
+			</if>
+			<if test="user_google != null">
+			user_google, 
+			</if>
+			
+			provider,
+			user_reg_date
+        )
+        values(
+            #{user_id},
+			#{user_pw},
+			#{user_name},
+			<if test="user_age != null">
+			#{user_age},
+			</if>
+			<if test="user_kakao != null">
+			#{user_kakao}, 
+			</if>
+			<if test="user_naver != null">
+			#{user_naver}, 
+			</if>
+			<if test="user_google != null">
+			#{user_google}, 
+			</if>
+			#{provider},
+			date(NOW())
+        )
+    </insert>
+	
+	<insert id="insertUserJoin" parameterType="UserVO">
+		insert into user_db.user_info_tbl(
+			
+			
+		)
+        values(
+			
+			
+		)
+	</insert>
+    
+    
+    <select id="getUserPassWord" parameterType="String" resultType="String">
+		select user_pw where user_id = #{user_id}
 	</select>
 </mapper>
 

@@ -25,6 +25,8 @@ public interface AdminService {
     // 유저 리스트
     List<UserVO> getUserList();
     
+    // 승인 대기중인 전문가 유저 리스트
+    List<UserVO> getProPenUser(String user_level_idx);
     
     
 }

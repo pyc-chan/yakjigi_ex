@@ -1,6 +1,5 @@
 package com.ict.edu.domain.admin.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ import com.ict.edu.domain.user.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 
@@ -33,22 +31,31 @@ public class AdminController {
     @Autowired
     private QnaService qnaService;
     
+    // 유저 목록
     @GetMapping("/user_list")
     public List<UserVO> getUserList() {
         List<UserVO> list = adminService.getUserList();
         return list;
     }
     
+    // 문의 목록
     @GetMapping("/qna_list")
     public List<QnaVO> getQnaList() {
         List<QnaVO> list = qnaService.getQnaList();
         return list;
     }
     
+    // 문의 답변 없는 목록
     @GetMapping("/qna_no_answer")
     public List<QnaVO> getNoAnswerList() {
         List<QnaVO> list = qnaService.getNoAnswerList();
         return list;
     }
     
+    // 전문가 회원 미등록 목록
+    @GetMapping("/user_pen_list")
+    public List<UserVO> getProPenUser(){
+        List<UserVO> list = adminService.getProPenUser("전문가 대기idx");
+        return list;
+    }
 }
