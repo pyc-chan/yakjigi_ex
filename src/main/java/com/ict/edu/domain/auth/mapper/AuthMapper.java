@@ -1,5 +1,7 @@
 package com.ict.edu.domain.auth.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ict.edu.domain.auth.vo.UserVO;
@@ -23,4 +25,8 @@ public interface AuthMapper {
     
     // 비밀번호 체크
     public String getUserPassWord(String user_id);
+    
+    // 아이디 찾기
+    public List<UserVO> userFindById(String user_email);
+    
 } 

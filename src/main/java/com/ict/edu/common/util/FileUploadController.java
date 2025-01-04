@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ict.edu.domain.auth.vo.DataVO;
 
-public class FileUploadHandler {
+public class FileUploadController {
     
     // 최종 경로
     private String path;
@@ -24,7 +24,7 @@ public class FileUploadHandler {
     // 업로드된 경로
     private String uploadPath;
     
-    public FileUploadHandler(MultipartFile file, String uploadPath){
+    public FileUploadController(MultipartFile file, String uploadPath){
         this.file = file;
         this.uploadPath = uploadPath;
         path = uploadDir+"/"+uploadPath;

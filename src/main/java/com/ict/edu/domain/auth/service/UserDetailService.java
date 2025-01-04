@@ -1,6 +1,7 @@
 package com.ict.edu.domain.auth.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.ict.edu.common.util.RegexGenerator;
 import com.ict.edu.domain.auth.mapper.AuthMapper;
+import com.ict.edu.domain.auth.vo.DataVO;
 import com.ict.edu.domain.auth.vo.UserVO;
 
 
@@ -82,7 +84,14 @@ public class UserDetailService implements UserDetailsService{
         return new User(uvo.getUser_id(), "", new ArrayList<>());
     }
     
+    
+    // 아이디 찾기
+    public List<UserVO> userFindById(String user_email){
+        return authMapper.userFindById(user_email);
+    }
+    
     // 일반 유저 회원가입
+    
     
 }
 

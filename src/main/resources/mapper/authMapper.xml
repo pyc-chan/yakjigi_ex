@@ -5,14 +5,18 @@
 
 <!-- namespace는 반드시 mapper 위치로 설정해야 된다. -->
 <mapper namespace="com.ict.edu.domain.auth.mapper.AuthMapper">
+	
+	<!-- 유저 디테일 -->
 	<select id="getUserDetail"  parameterType="String" resultType="UserVO">
-		select * from user_db.user_tbl where user_id = #{user_id}
+		select * from user_db.user_info_tbl where user_id = #{user_id}
 	</select>
 	
+	<!-- 아이디로 유저정보 가져오기 -->
 	<select id="getUserById" parameterType="String" resultType="UserVO">
         select * from user_db.user_info_tbl where user_id = #{user_id}
     </select>
     
+	<!-- SNS 로그인 확인 -->
     <select id="findUserByProvider" parameterType="UserVO" resultType="UserVO">
         select * from user_db.user_info_tbl
         where  
@@ -25,14 +29,15 @@
 		)
     </select>
     
+	<!-- SNS 회원가입 -->
     <insert id="insertUserByProvider" parameterType="UserVO">
         insert into user_db.user_info_tbl(
             user_id,
+			user_level_idx,
             user_pw,
+			user_profile,
             user_name,
-            <if test="user_age != null">
-			user_age, 
-			</if>
+			user_nickname,
 			<if test="user_kakao != null">
 			user_kakao, 
 			</if>
@@ -42,17 +47,24 @@
 			<if test="user_google != null">
 			user_google, 
 			</if>
-			
-			provider,
-			user_reg_date
+			<if test="user_birth_date != null">
+			user_birth_date,
+			</if>
+			user_gender,
+			user_email,
+			<if test="user_phone != null">
+			user_phone,
+			</if>
+			user_reg_date,
+			user_last_login
         )
         values(
             #{user_id},
+			1,
 			#{user_pw},
+			#{user_profile},
 			#{user_name},
-			<if test="user_age != null">
-			#{user_age},
-			</if>
+			#{user_nickname},
 			<if test="user_kakao != null">
 			#{user_kakao}, 
 			</if>
@@ -62,14 +74,53 @@
 			<if test="user_google != null">
 			#{user_google}, 
 			</if>
-			#{provider},
-			date(NOW())
+			<if test="user_birth_date != null">
+			#{user_birth_date},
+			</if>
+			<choose>
+				<when test="user_gender != null">
+					#{user_gender},
+				</when>
+				<otherwise>
+					Etc,
+				</otherwise>
+			</choose>
+			user_email,
+			<if test="user_phone != null">
+			#{user_phone},
+			</if>
+			date(NOW()),
+			null
         )
     </insert>
 	
+	<!-- 일반 유저 회원가입 -->
 	<insert id="insertUserJoin" parameterType="UserVO">
 		insert into user_db.user_info_tbl(
-			
+		user_id,
+		user_level_idx,
+		user_pw,
+		user_profile,
+		user_reg_date,
+		user_name,
+		user_nickname,
+		<if test="user_kakao != null">
+			user_kakao,
+		</if>
+		<if test="user_naver != null">
+			user_naver,
+		</if>
+		<if test="user_google != null">
+			user_google,
+		</if>
+		user_birth_date,
+		user_gender,
+		user_email,
+		user_phone,
+		admin_idx,
+		user_out_date,
+		user_out_reason,
+		user_last_login
 			
 		)
         values(
@@ -78,9 +129,14 @@
 		)
 	</insert>
     
-    
+    <!-- 패스워드 가져오기 -->
     <select id="getUserPassWord" parameterType="String" resultType="String">
-		select user_pw where user_id = #{user_id}
+		select user_pw from user_db.user_info_tbl where user_id = #{user_id}
+	</select>
+	
+	<!-- 아이디 찾기 -->
+	<select id="userFindById" parameterType="String" resultType="UserVO">
+		select * from user_db.user_info_tbl where user_email = #{user_email}
 	</select>
 </mapper>
 

@@ -2,18 +2,25 @@ package com.ict.edu.domain.auth.controller;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.ict.edu.domain.auth.service.AuthAPIService;
+import com.ict.edu.domain.auth.service.EmailService;
 import com.ict.edu.domain.auth.service.UserDetailService;
 import com.ict.edu.domain.auth.vo.DataVO;
 import com.ict.edu.domain.auth.vo.UserVO;
 import com.ict.edu.domain.user.service.UserService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @RestController
 @RequestMapping("/auth")
@@ -27,6 +34,9 @@ public class AuthController {
     
     @Autowired
     private UserDetailService userDetailService;
+    
+    @Autowired
+    private EmailService emailService;
     
     // 로그인
     @PostMapping("/login")
@@ -59,8 +69,66 @@ public class AuthController {
     }
     
     // 회원가입시 이메일 확인
+    @PostMapping("/emailchk")
+	public DataVO emailchk(UserVO uvo) {
+        DataVO dvo = new DataVO();
+        // 임시번호 6자리 만들기
+        Random random = new Random();
+        // 0 ~ 1000000 미만의 정수를 무작위로 생성 (6자리 숫자 중 하나를 랜덤으로 만듬
+        String randomNumber = String.valueOf(random.nextInt(1000000));
+        // 길이가 6자리가 안되면 0으로 채움
+        if(randomNumber.length() < 6) {
+            int substract = 6-randomNumber.length();
+            StringBuffer sb = new StringBuffer();
+            for(int i=0; i<substract; i++) {
+                sb.append("0");
+            }
+            sb.append(randomNumber);
+            randomNumber = sb.toString();
+        }
+        // 임시번호 서버에 출력
+        System.out.println("임시번호 : "+randomNumber);
+        dvo = emailService.sendEmail(uvo, randomNumber);
+        Map<String, Object> map = new HashMap<>();
+        map.put("uvo", uvo);
+        map.put("randomNumber", randomNumber);
+        dvo.setData(map);
+        return dvo;
+	}
     
     
     // 회원가입
+    @PostMapping("/join")
+    public DataVO userJoin(UserVO uvo){
+        DataVO dvo = new DataVO();
+        int num = userService.postUserJoin(uvo);
+        if(num >0){
+            dvo.setMessage("회원가입 성공");
+            dvo.setSuccess(true);
+        }else{
+            dvo.setMessage("회원가입중 오류 발생");
+            dvo.setSuccess(false);
+        }
+        return dvo;
+    }
+    
+    // 아이디 찾기
+    @PostMapping("/findid")
+    public DataVO userFindById(String user_email){
+        DataVO dvo = new DataVO();
+        
+        if(num >0){
+            dvo.setMessage("회원가입 성공");
+            dvo.setSuccess(true);
+        }else{
+            dvo.setMessage("회원가입중 오류 발생");
+            dvo.setSuccess(false);
+        }
+        return dvo;
+        
+    }
+    
+    
+    // 비밀번호 찾기
     
 }
