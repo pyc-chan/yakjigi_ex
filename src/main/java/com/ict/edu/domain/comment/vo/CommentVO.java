@@ -14,7 +14,7 @@ public class CommentVO {
     private LocalDate comment_reg_date = LocalDate.now();
     private int comment_update;
     private int comment_delete;
-    // private comment_file; mediumblob String 결정나면 수정
+    private String comment_file; 
     private String comment_file_name;
     private String notice_idx;
     private String qna_idx;

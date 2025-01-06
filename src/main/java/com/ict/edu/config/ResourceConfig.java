@@ -12,5 +12,8 @@ public class ResourceConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/upload/**") // URL 경로
                 .addResourceLocations("file:D:/upload/") // 실제 경로
                 .setCachePeriod(3600); // 캐시 기간(초)
+        registry.addResourceHandler("/download/**") // URL 경로
+                .addResourceLocations("file:D:/upload/") // 실제 경로
+                .setCachePeriod(3600); // 캐시 기간(초)
     }
 }

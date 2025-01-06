@@ -58,9 +58,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                     // 인증 없이 접근
                     .requestMatchers(
-                        "/api/**", "/", "/login", 
-                        "/fna", "/download", "/join", 
-                        "/findpw", "/findid", "/auth")
+                        "/api/**", "/", "/oauth/**", 
+                        "/fna", "/download", "/auth/**")
                         .permitAll()
                     // 인증 필요
                     .requestMatchers("/admin/**").hasAnyAuthority("admin", "super")

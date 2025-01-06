@@ -10,7 +10,6 @@ import com.ict.edu.domain.admin.service.AdminService;
 import com.ict.edu.domain.auth.vo.UserVO;
 import com.ict.edu.domain.qna.service.QnaService;
 import com.ict.edu.domain.qna.vo.QnaVO;
-import com.ict.edu.domain.user.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,9 +23,6 @@ public class AdminController {
     
     @Autowired
     private AdminService adminService;
-    
-    @Autowired
-    private UserService userService;
     
     @Autowired
     private QnaService qnaService;

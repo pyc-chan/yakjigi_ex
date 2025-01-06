@@ -28,4 +28,6 @@ public interface UserMapper {
     // 회원가입
     int postUserJoin(UserVO uvo);
     
+    // 비밀번호 확인
+    String getUserPassWord(String user_id);
 }

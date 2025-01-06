@@ -1,11 +1,11 @@
 package com.ict.edu.common.util;
 
 import java.util.regex.Pattern;
-import java.security.SecureRandom;
+/* import java.security.SecureRandom; */
 import java.util.regex.Matcher;
 
 public class RegexGenerator {
-    // 영어 대문자
+    /* // 영어 대문자
     private final String UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     // 영어 소문자
     private final String LOWER = "abcdefghijklmnopqrstuvwxyz";
@@ -14,7 +14,7 @@ public class RegexGenerator {
     // 특수문자
     private final String SPECIAL = "!@#$%^&*!@#$%^&*!@#$%^&*";
     
-    private final String ALL_CHARACTERS = UPPER + LOWER + DIGITS + SPECIAL;
+    private final String ALL_CHARACTERS = UPPER + LOWER + DIGITS + SPECIAL; */
     
     // 패턴 검사
     public boolean useRegex(final String input) {
@@ -27,8 +27,9 @@ public class RegexGenerator {
         return matcher.matches();
     }
     
+    // 비밀번호 랜덤값 생성기
     
-    public String getRandomReqex(){
+    /* public String getRandomReqex(){
         SecureRandom random = new SecureRandom();
         
         StringBuilder sb = new StringBuilder();
@@ -46,5 +47,5 @@ public class RegexGenerator {
             }
         }
         return result;
-    }
+    } */
 }

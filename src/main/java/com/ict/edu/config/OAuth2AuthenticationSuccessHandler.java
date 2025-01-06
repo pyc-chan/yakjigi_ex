@@ -30,31 +30,31 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     // 실제 성공한 다음에 클라이언트로 리다이렉트 해주는 메서드
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-            Authentication authentication) throws IOException, ServletException {
-            log.info("OAth2AuthenticationSuccessHandler");
+        Authentication authentication) throws IOException, ServletException {
+        log.info("OAth2AuthenticationSuccessHandler");
             // authentication.getPrincipal가 OAuth2User(사용자정보를 가지고 있는객체)타입인지 확인한다.
             // authentication 객체는 현재 사용자의 인증상태
             // getPrincipal() 가지고 있는 사용자 정보를 반환
-            if (authentication.getPrincipal() instanceof OAuth2User) {
-                OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-                String uri = request.getRequestURI();
-                String provider = "";
-                if (uri.contains("kakao")) {
-                    provider = "kakao";
-                } else if (uri.contains("naver")) {
-                    provider = "naver";
-                } else if (uri.contains("google")){
-                    provider = "google";
-                } else{
-                    provider = null;
-                }
+        if (authentication.getPrincipal() instanceof OAuth2User) {
+            OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+            String uri = request.getRequestURI();
+            String provider = "";
+            if (uri.contains("kakao")) {
+                provider = "kakao";
+            } else if (uri.contains("naver")) {
+                provider = "naver";
+            } else if (uri.contains("google")){
+                provider = "google";
+            } else{
+                provider = null;
+            }
 
-                // 성공 후 토큰을 만들어서 클라이언트에게 리다이렉트 한다.
-                // 사용자 정보를 DB에 넣자
-                // UserDetails userDetails =
-                // userDetailService.loadUserByOAuth2User(oAuth2User,provider);
-                // String token = jwtUtil.generateToken(userDetails);
-
+            // 성공 후 토큰을 만들어서 클라이언트에게 리다이렉트 한다.
+            // 사용자 정보를 DB에 넣자
+            // UserDetails userDetails =
+            // userDetailService.loadUserByOAuth2User(oAuth2User,provider);
+            // String token = jwtUtil.generateToken(userDetails);
+            if(provider != null){
                 String id = oAuth2User.getAttribute("id").toString();
                 String token = jwtUtil.generateToken(id);
 
@@ -66,8 +66,9 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                         URLEncoder.encode(id, StandardCharsets.UTF_8),
                         URLEncoder.encode(oAuth2User.getAttribute("name"), StandardCharsets.UTF_8),
                         URLEncoder.encode(oAuth2User.getAttribute("email"), StandardCharsets.UTF_8));
-
+                
                 response.sendRedirect(redirectUrl);
+            }
         }
     }
 }

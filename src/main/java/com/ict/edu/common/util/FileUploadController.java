@@ -21,13 +21,9 @@ public class FileUploadController {
     // 파일
     private MultipartFile file;
     
-    // 업로드된 경로
-    private String uploadPath;
-    
-    public FileUploadController(MultipartFile file, String uploadPath){
+    public FileUploadController(MultipartFile file, String filename){
         this.file = file;
-        this.uploadPath = uploadPath;
-        path = uploadDir+"/"+uploadPath;
+        path = uploadDir+"/"+filename;
     }
     
     public DataVO FileUpload(){

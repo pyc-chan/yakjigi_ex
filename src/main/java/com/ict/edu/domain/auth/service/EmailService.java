@@ -9,10 +9,7 @@ import org.springframework.stereotype.Service;
 import com.ict.edu.domain.auth.vo.DataVO;
 import com.ict.edu.domain.auth.vo.UserVO;
 
-import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-
-import java.io.UnsupportedEncodingException;
 
 @Service
 public class EmailService {

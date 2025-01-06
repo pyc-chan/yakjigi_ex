@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import com.ict.edu.common.util.RegexGenerator;
 import com.ict.edu.domain.auth.mapper.AuthMapper;
-import com.ict.edu.domain.auth.vo.DataVO;
 import com.ict.edu.domain.auth.vo.UserVO;
 
 
@@ -30,10 +29,10 @@ public class UserDetailService implements UserDetailsService{
         if (uvo == null) {
             throw new UsernameNotFoundException("없는 아이디 입니다.");
         }
-        return new User(uvo.getUser_id(), uvo.getPassword(), new ArrayList<>());
+        return new User(uvo.getUser_id(), uvo.getUser_pw(), new ArrayList<>());
     }
     
-    // DB에서 개인 정보 추출
+    // DB에서 아이디로 정보 추출
     public UserVO getUserDetail(String user_id) {
         return authMapper.getUserDetail(user_id);
     }
@@ -74,10 +73,10 @@ public class UserDetailService implements UserDetailsService{
             // 아이디가 존재하면 DB에 있는 것, 아니면 DB에 없는 것
             UserVO uvo2 = authMapper.findUserByProvider(uvo);
             if (uvo2 == null) {
-                RegexGenerator reqexGenerator = new RegexGenerator();
+                /* RegexGenerator reqexGenerator = new RegexGenerator(); */
                 // 비밀번호 정규식으로 랜덤 생성 후 해싱
-                String pw = BCrypt.hashpw(reqexGenerator.getRandomReqex(), BCrypt.gensalt());
-                uvo.setUser_pw(pw);
+                /* String pw = BCrypt.hashpw(reqexGenerator.getRandomReqex(), BCrypt.gensalt());
+                uvo.setUser_pw(pw); */
                 authMapper.insertUserByProvider(uvo);
             }
         }
@@ -90,7 +89,6 @@ public class UserDetailService implements UserDetailsService{
         return authMapper.userFindById(user_email);
     }
     
-    // 일반 유저 회원가입
     
     
 }

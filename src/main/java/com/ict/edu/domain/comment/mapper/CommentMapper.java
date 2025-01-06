@@ -11,7 +11,7 @@ import com.ict.edu.domain.comment.vo.CommentVO;
 public interface CommentMapper {
     // 댓글 리스트(게시판 종류, 게시판 idx)
     // 게시판 종류는 Enum형임!
-    List<CommentVO> getCommentList(Map map);
+    List<CommentVO> getCommentList(Map<String, String> map);
     
     // 댓글 작성
     int postCommentJoin(CommentVO cvo);
