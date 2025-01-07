@@ -1,6 +1,8 @@
 package com.ict.edu.domain.qna.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ict.edu.domain.auth.vo.DataVO;
+import com.ict.edu.domain.comment.service.CommentService;
+import com.ict.edu.domain.comment.vo.CommentVO;
+import com.ict.edu.domain.comment.vo.CommentVO.Comment_board;
 import com.ict.edu.domain.qna.service.QnaService;
 import com.ict.edu.domain.qna.vo.QnaVO;
 
@@ -22,6 +27,8 @@ public class QnaController {
     @Autowired
     private QnaService qnaService;
     
+    @Autowired
+    private CommentService commentService;
     
     // 문의 리스트
     @GetMapping("/list")
@@ -32,13 +39,21 @@ public class QnaController {
     
     // 문의 디테일
     @GetMapping("/detail")
-    public QnaVO getQnaDetail(String Qna_idx){
+    public DataVO getQnaDetail(String Qna_idx){
+        DataVO dvo = new DataVO();
         QnaVO qvo = qnaService.getQnaDetail(Qna_idx);
-        return qvo;
+        Map<String, Object> map = new HashMap<>();
+        if(qvo.getQna_answer_stat()>0){
+            List<CommentVO> list = commentService.getCommentList(Comment_board.QNA, Qna_idx);
+            map.put("list",list);
+        }
+        map.put("qvo", qvo);
+        dvo.setData(map);
+        return dvo;
     }
     
     // 문의 작성
-    @PostMapping("/insert")
+    @PostMapping("/join")
     public DataVO postQnaJoin(QnaVO qvo){
         DataVO dvo = new DataVO();
         if(qnaService.postQnaJoin(qvo)>0){
@@ -52,25 +67,6 @@ public class QnaController {
         return dvo;
     }
     
-    // 답변 작성
-    @PutMapping("/answer")
-    public DataVO putQnaUpdate(QnaVO qvo){
-        DataVO dvo = new DataVO();
-        if(qnaService.putQnaUpdate(qvo)>0){
-            dvo.setMessage("답변 완료");
-            dvo.setSuccess(true);
-        }else{
-            dvo.setMessage("답변 실패");
-            dvo.setSuccess(false);
-            dvo.setData(qvo);
-        }
-        return dvo;
-    }
     
-    // 답변 안된 리스트
-    @GetMapping("/no_answer")
-    public List<QnaVO> getNoAnswerList(){
-        List<QnaVO> list = qnaService.getNoAnswerList();
-        return list;
-    }
+    
 }

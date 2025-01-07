@@ -59,7 +59,7 @@ public class SecurityConfig {
                     // 인증 없이 접근
                     .requestMatchers(
                         "/api/**", "/", "/oauth/**", 
-                        "/fna", "/download", "/auth/**")
+                        "/fna/**", "/download/**", "/auth/**")
                         .permitAll()
                     // 인증 필요
                     .requestMatchers("/admin/**").hasAnyAuthority("admin", "super")

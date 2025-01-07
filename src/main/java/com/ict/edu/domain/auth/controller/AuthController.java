@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ict.edu.common.util.GravatarService;
 import com.ict.edu.domain.auth.service.AuthAPIService;
 import com.ict.edu.domain.auth.service.EmailService;
 import com.ict.edu.domain.auth.service.UserDetailService;
@@ -100,6 +101,9 @@ public class AuthController {
     @PostMapping("/join")
     public DataVO userJoin(UserVO uvo){
         DataVO dvo = new DataVO();
+        GravatarService gravatarService = new GravatarService();
+        String profileUrl = gravatarService.getGravatarUrl(uvo.getUser_id());
+        uvo.setUser_profile(profileUrl);
         int num = userService.postUserJoin(uvo);
         if(num >0){
             dvo.setMessage("회원가입 성공");
@@ -115,7 +119,7 @@ public class AuthController {
     @PostMapping("/findid")
     public DataVO userFindById(String user_email){
         DataVO dvo = new DataVO();
-        List<UserVO> list = userDetailService.userFindById(user_email);
+        List<UserVO> list = userDetailService.userFindByEmail(user_email);
         if(list != null){
             dvo.setSuccess(true);
             dvo.setMessage("아이디 찾기 성공");

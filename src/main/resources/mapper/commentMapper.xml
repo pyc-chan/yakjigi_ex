@@ -29,9 +29,8 @@
             comment_content,
             comment_reg_date,
             comment_board,
-            <!-- comment_file, -->
-            <if test="comment_file_name != null">
-                comment_file_name,
+            <if test="comment_file != null">
+                comment_file,
             </if>
             <if test="notice_idx != null">
                 notice_idx
@@ -48,11 +47,10 @@
                 #{admin_idx},
             </if>
             #{comment_content},
-            date(NOW()),
+            CURRENT_DATE,
             #{comment_board},
-            <!-- comment_file, -->
-            <if test="comment_file_name != null">
-                #{comment_file_name},
+            <if test="comment_file != null">
+                #{comment_file},
             </if>
             <if test="notice_idx != null">
                 #{notice_idx}
@@ -63,22 +61,23 @@
         )
     </insert>
     
+    <!-- 댓글 수정 -->
     <update id="putCommentUpdate" parameterType="CommentVO">
         update board_db.comment_tbl 
         <set> 
             comment_update=1, 
-            comment_content = #{comment_content}
-            <!-- <if test="comment_file != null"> -->
-                <!-- comment_file = #{comment_file} -->
-            <!-- </if> -->
+            comment_content = #{comment_content},
+            <if test="comment_file != null">
+                comment_file = #{comment_file},
+            </if>
             <if test="comment_file_name != null">
-                , comment_file_name = #{comment_file_name}
+                comment_file_name = #{comment_file_name}
             </if>
         </set>
         where comment_idx = #{comment_idx}
-        
     </update>
     
+    <!-- 댓글 삭제 -->
     <update id="putCommentDelete" parameterType="CommentVO">
         update board_db.comment_tbl
         <set>
@@ -86,6 +85,11 @@
         </set>
         where comment_idx = #{comment_idx}
     </update>
+    
+    <select id="getCommentDetail" parameterType="String" resultType="CommentVO">
+        select * from board_db.comment_tbl where comment_idx = #{comment_idx}
+    </select>
+    
     
 </mapper>
 

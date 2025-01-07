@@ -19,7 +19,6 @@
     <!-- admin 생성 -->
     <insert id="postAdminJoin" parameterType="AdminVO">
         insert into admin_db.admin_info_tbl(
-            <!-- not null인 경우 -->
             admin_id,
             admin_level_idx,
             admin_pw,
@@ -39,7 +38,7 @@
             #{admin_nickname},
             #{admin_email},
             #{admin_phone},
-            #{admin_out}
+            0
         )
     </insert>
     

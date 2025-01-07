@@ -18,5 +18,6 @@ public interface CommentService {
     // 댓글 삭제(실제로는 update)
     int putCommentDelete(CommentVO comvo);
     
-    
+    // 댓글 데이터 확인
+    CommentVO getCommentDetail(String comment_idx);
 }

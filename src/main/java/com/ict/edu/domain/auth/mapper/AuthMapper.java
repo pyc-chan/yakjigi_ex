@@ -27,6 +27,6 @@ public interface AuthMapper {
     public String getUserPassWord(String user_id);
     
     // 아이디 찾기
-    public List<UserVO> userFindById(String user_email);
+    public List<UserVO> userFindByEmail(String user_email);
     
 } 

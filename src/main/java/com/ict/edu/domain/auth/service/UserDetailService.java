@@ -8,11 +8,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.ict.edu.common.util.RegexGenerator;
 import com.ict.edu.domain.auth.mapper.AuthMapper;
 import com.ict.edu.domain.auth.vo.UserVO;
 
@@ -85,8 +83,8 @@ public class UserDetailService implements UserDetailsService{
     
     
     // 아이디 찾기
-    public List<UserVO> userFindById(String user_email){
-        return authMapper.userFindById(user_email);
+    public List<UserVO> userFindByEmail(String user_email){
+        return authMapper.userFindByEmail(user_email);
     }
     
     

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace는 반드시 mapper 위치로 설정해야 된다. -->
+<mapper namespace="com.ict.edu.domain.fna.mapper.FnaMapper">
+    <select id="getFnaList" resultType="FnaVO">
+        select * from board_db.fna_tbl order by fna_idx desc
+    </select>
+    
+    <insert id="postFnaJoin" parameterType="FnaVO">
+        insert into board_db.fna_tbl(
+            admin_idx,
+            fna_question,
+            fna_answer,
+            fna_reg_date,
+            fna_delete
+        )
+        values(
+            admin_idx,
+            fna_question,
+            fna_answer,
+            CURRENT_DATE,
+            0
+        )
+    </insert>
+    
+    <update id="putFnaUpdate" parameterType="FnaVO">
+        update 
+        <set>
+            <if test="admin_idx != null">
+                admin_idx = #{admin_idx},
+            </if>
+            <if test="fna_question != null">
+                fna_question = #{fna_question},
+            </if>
+            <if test="fna_answer != null">
+                fna_answer = #{fna_answer},
+            </if>
+            fna_up_date = CURRENT_DATE
+        </set>
+        where fna_idx = #{fna_idx}
+    </update>
+    
+    <update id="putFnaDelete" parameterType="String">
+        update
+        <set>
+            fna_delete = 1,
+            fna_out_date = CURRENT_DATE
+        </set>
+        where fna_idx = #{fna_idx}
+    </update>
+</mapper>

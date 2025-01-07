@@ -18,5 +18,5 @@ public interface FnaMapper {
     int putFnaUpdate(FnaVO fvo);
     
     // 자주 묻는 질문 삭제(실제로는 update)
-    int putFnaDelete(FnaVO fvo);
+    int putFnaDelete(String fna_idx);
 }

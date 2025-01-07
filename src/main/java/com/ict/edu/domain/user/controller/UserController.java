@@ -6,6 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ict.edu.common.util.FileUploadController;
 import com.ict.edu.domain.auth.vo.DataVO;
 import com.ict.edu.domain.auth.vo.UserVO;
 import com.ict.edu.domain.user.service.UserService;
@@ -22,10 +23,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RestController
 @RequestMapping("/user")
 public class UserController {
-    
-    @Value("${file.upload-dir}")
-    private String uploadDir;
-    
     
     @Autowired
     private UserService userService;
@@ -57,15 +54,19 @@ public class UserController {
     @PutMapping("/profile")
     DataVO putUserProfile(UserVO uvo){
         DataVO dvo = new DataVO();
-        
-        if(userService.putUserProfile(uvo)>0){
-            log.info("프로필 수정 성공");
-            dvo.setSuccess(true);
-            dvo.setMessage("프로필이 성공적으로 수정되었습니다.");
-        }else{
-            log.info("프로필 수정 실패");
-            dvo.setSuccess(false);
-            dvo.setMessage("프로필 수정에 실패하였습니다.");
+        FileUploadController fileUploadController = new FileUploadController(uvo.getFile(), "profile");
+        dvo = fileUploadController.FileUpload();
+        if(dvo.isSuccess()){
+            uvo.setUser_profile(dvo.getData().toString());
+            if(userService.putUserProfile(uvo)>0){
+                log.info("프로필 수정 성공");
+                dvo.setSuccess(true);
+                dvo.setMessage("프로필이 성공적으로 수정되었습니다.");
+            }else{
+                log.info("프로필 수정 실패");
+                dvo.setSuccess(false);
+                dvo.setMessage("프로필 수정에 실패하였습니다.");
+            }
         }
         return dvo;
     }
@@ -142,7 +143,7 @@ public class UserController {
     }
     
     // 회원가입
-    @PostMapping("/insert")
+    @PostMapping("/join")
     DataVO postUserJoin(UserVO uvo){
         DataVO dvo = new DataVO();
         if(userService.postUserJoin(uvo)>0){
@@ -156,7 +157,6 @@ public class UserController {
         }
         return dvo;
     }
-    
     
     
     

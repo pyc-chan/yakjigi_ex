@@ -20,9 +20,9 @@ public class CommentServiceImpl implements CommentService{
     public List<CommentVO> getCommentList(Comment_board comment_board, String idx) {
         Map<String, String> map = new HashMap<String, String>();
         map.put("comment_board", comment_board.getBoard());
-        if(comment_board.getBoard() == "Notice"){
+        if(comment_board.getBoard().equals("Notice")){
             map.put("notice_idx", idx);
-        }else if(comment_board.getBoard() == "Qna"){
+        }else if(comment_board.getBoard().equals("Qna")){
             map.put("qna_idx", idx);
         }
         return commentMapper.getCommentList(map);
@@ -41,6 +41,11 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public int putCommentDelete(CommentVO comvo) {
         return commentMapper.putCommentDelete(comvo);
+    }
+
+    @Override
+    public CommentVO getCommentDetail(String comment_idx) {
+        return commentMapper.getCommentDetail(comment_idx);
     }
     
     

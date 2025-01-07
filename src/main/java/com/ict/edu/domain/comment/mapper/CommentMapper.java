@@ -22,5 +22,6 @@ public interface CommentMapper {
     // 댓글 삭제(실제로는 update)
     int putCommentDelete(CommentVO cvo);
     
-    
+    // 댓글 데이터 확인
+    CommentVO getCommentDetail(String comment_idx);
 }

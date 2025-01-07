@@ -14,6 +14,4 @@ public class QnaVO {
     private LocalDate qna_q_reg_date = LocalDate.of(2000, 1, 1);
     private String admin_idx = null;
     private int qna_answer_stat = 0;
-    private String qna_answer = null;
-    private LocalDate qna_a_reg_date = null;
 }

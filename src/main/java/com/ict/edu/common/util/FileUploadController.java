@@ -21,9 +21,9 @@ public class FileUploadController {
     // 파일
     private MultipartFile file;
     
-    public FileUploadController(MultipartFile file, String filename){
+    public FileUploadController(MultipartFile file, String filepath){
         this.file = file;
-        path = uploadDir+"/"+filename;
+        path = uploadDir+"/"+filepath;
     }
     
     public DataVO FileUpload(){
@@ -44,7 +44,7 @@ public class FileUploadController {
             
             dvo.setSuccess(true);
             dvo.setMessage("업로드 성공");
-            
+            dvo.setData(filename);
             return dvo;
         } catch (Exception e) {
             dvo.setSuccess(false);
@@ -58,25 +58,29 @@ public class FileUploadController {
         DataVO dvo = new DataVO();
         try {
             // 업로드 실패시 리턴
-            dvo = FileUpload();
-            if(!dvo.isSuccess()){
-                return dvo;
+            if(file != null){
+                dvo = FileUpload();
+                if(!dvo.isSuccess()){
+                    return dvo;
+                }
             }
-            // 업로드 성공하면 기존 파일 삭제 시도
+            // 기존 파일 삭제 시도
             File existingFile = new File(path, oldfile);
             if(existingFile.exists()){
                 boolean isDeleted = existingFile.delete();
                 if(!isDeleted){
                     dvo.setSuccess(false);
                     dvo.setMessage("기존 파일 삭제 실패");
-                    return dvo;
+                }else{
+                    dvo.setSuccess(true);
+                    dvo.setMessage("파일 변경 성공");
                 }
             }
             return dvo;
         } catch (Exception e) {
             dvo.setSuccess(false);
             dvo.setMessage("업데이트 실패");
-            return dvo;
         }
+        return dvo;
     }
 }

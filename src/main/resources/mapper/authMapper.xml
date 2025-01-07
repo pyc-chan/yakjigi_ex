@@ -82,14 +82,14 @@
 					#{user_gender},
 				</when>
 				<otherwise>
-					Etc,
+					'Etc',
 				</otherwise>
 			</choose>
 			user_email,
 			<if test="user_phone != null">
 			#{user_phone},
 			</if>
-			date(NOW()),
+			CURRENT_DATE,
 			null
         )
     </insert>
@@ -97,35 +97,70 @@
 	<!-- 일반 유저 회원가입 -->
 	<insert id="insertUserJoin" parameterType="UserVO">
 		insert into user_db.user_info_tbl(
-		user_id,
-		user_level_idx,
-		user_pw,
-		user_profile,
-		user_reg_date,
-		user_name,
-		user_nickname,
-		<if test="user_kakao != null">
-			user_kakao,
-		</if>
-		<if test="user_naver != null">
-			user_naver,
-		</if>
-		<if test="user_google != null">
-			user_google,
-		</if>
-		user_birth_date,
-		user_gender,
-		user_email,
-		user_phone,
-		admin_idx,
-		user_out_date,
-		user_out_reason,
-		user_last_login
+			user_id,
+			user_level_idx,
+			<if test="user_pw != null">
+				user_pw,
+			</if>
+			user_profile,
+			user_reg_date,
+			user_name,
+			user_nickname,
+			<if test="user_kakao != null">
+				user_kakao,
+			</if>
+			<if test="user_naver != null">
+				user_naver,
+			</if>
+			<if test="user_google != null">
+				user_google,
+			</if>
+			<if test="user_birth_date != null">
+				user_birth_date,
+			</if>
+			user_gender,
+			user_email,
+			<if test="user_phone != null">
+				user_phone,
+			</if>
+			user_last_login
 			
 		)
         values(
-			
-			
+			#{user_id},
+			#{user_level_idx},
+			<if test="user_pw != null">
+				#{user_pw},
+			</if>
+			#{user_profile},
+			CURRENT_DATE,
+			#{user_name},
+			#{user_nickname},
+			<if test="user_kakao != null">
+				#{user_kakao},
+			</if>
+			<if test="user_naver != null">
+				#{user_naver},
+			</if>
+			<if test="user_google != null">
+				#{user_google},
+			</if>
+			<if test="user_birth_date != null">
+				#{user_birth_date},
+			</if>
+			<choose>
+				<when test="user_gender != null">
+					#{user_gender},
+				</when>
+				<otherwise>
+					Etc,
+				</otherwise>
+			</choose>
+			#{user_email},
+			<if test="user_phone != null">
+				#{user_phone},
+			</if>
+			null
 		)
 	</insert>
     
@@ -135,7 +170,7 @@
 	</select>
 	
 	<!-- 아이디 찾기 -->
-	<select id="userFindById" parameterType="String" resultType="UserVO">
+	<select id="userFindByEmail" parameterType="String" resultType="UserVO">
 		select * from user_db.user_info_tbl where user_email = #{user_email}
 	</select>
 </mapper>

@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class DataVO {
     
-    private boolean success;
-    private Object data;
-    private String token;
-    private String message;
+    private boolean success = false;
+    private Object data = null;
+    private String token = null;
+    private String message = null;
     private UserDetails userDetails;
 }

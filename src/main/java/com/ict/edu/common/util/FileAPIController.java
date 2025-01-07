@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/download/api")
-public class FileDownloadController {
+@RequestMapping("/api")
+public class FileAPIController {
     
     // upload 기본 경로
     @Value("${file.upload-dir}")
@@ -47,7 +47,7 @@ public class FileDownloadController {
         
         // http 응답을 생성하는 responseentity 빌더를 사용해 http 상태를 200으로 설정한다.
         // header에 content-disposition을 설정하며 attachment; filename="filename" 을 사용하여 브라우저가 파일을 다운로드 하도록 지시한다.
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\""+encodedFilename+"\"")
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\""+encodedFilename+"\"")
         .body(resource);
         
     }
