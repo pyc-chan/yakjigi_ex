@@ -17,6 +17,7 @@ import com.ict.edu.domain.auth.service.AuthAPIService;
 import com.ict.edu.domain.auth.service.EmailService;
 import com.ict.edu.domain.auth.service.UserDetailService;
 import com.ict.edu.domain.auth.vo.DataVO;
+import com.ict.edu.domain.auth.vo.UserBanVO;
 import com.ict.edu.domain.auth.vo.UserVO;
 import com.ict.edu.domain.user.service.UserService;
 
@@ -41,21 +42,33 @@ public class AuthController {
     @PostMapping("/login")
     public DataVO userLogin(UserVO uvo){
         DataVO dvo = new DataVO();
-        UserVO uvo2 = userDetailService.getUserDetail(uvo.getUser_id());
+        UserVO dbUvo = userDetailService.getUserDetail(uvo.getUser_id());
         // 아이디 존재여부 확인
-        if(uvo2 != null){
+        if(dbUvo != null){
             // 비밀번호 맞는지 확인
-            if(BCrypt.checkpw(uvo.getUser_pw(), uvo2.getUser_pw())){
+            if(BCrypt.checkpw(uvo.getUser_pw(), dbUvo.getUser_pw())){
+                // 정지 여부 확인
+                dvo = userDetailService.getUserBan(dbUvo.getUser_level_idx());
+                UserBanVO ubvo = (UserBanVO) dvo.getData();
+                // 정지 상태라면
+                if(!dvo.isSuccess()){
+                    dvo.setSuccess(false);
+                    dvo.setMessage("정지된 상태입니다. 정지 기간 : "+ubvo.getStop_end_date()+" 까지");
+                    return dvo;
+                }
+                
                 Map<String, String> request = new HashMap<>();
                 request.put("user_id", uvo.getUser_id());
-                if(uvo2.getUser_level_idx().equals("1")){
-                    request.put("role", "레벨 idx에 따라 변동1");
-                }else if(uvo2.getUser_level_idx().equals("2")){
-                    request.put("role", "레벨 idx에 따라 변동2");
-                }else if(uvo2.getUser_level_idx().equals("3")){
-                    request.put("role", "레벨 idx에 따라 변동3");
+                if(dbUvo.getUser_level_idx().equals("1")){
+                    request.put("role", "General");
+                }else if(dbUvo.getUser_level_idx().equals("2")){
+                    request.put("role", "ProPen");
+                }else if(dbUvo.getUser_level_idx().equals("3")){
+                    request.put("role", "ProApr");
+                }else if(dbUvo.getUser_level_idx().equals("4")){
+                    request.put("role", "ProDecl");
                 }
-                request.put("user_id", uvo2.getUser_id());
+                request.put("user_id", dbUvo.getUser_id());
                 String token = authAPIService.generateToken(request);
                 dvo.setData(token);
                 dvo.setSuccess(true);

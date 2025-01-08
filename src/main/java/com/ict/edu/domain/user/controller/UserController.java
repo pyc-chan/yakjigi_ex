@@ -54,8 +54,9 @@ public class UserController {
     @PutMapping("/profile")
     DataVO putUserProfile(UserVO uvo){
         DataVO dvo = new DataVO();
+        UserVO olduvo = userService.getUserDetail(uvo.getUser_id());
         FileUploadController fileUploadController = new FileUploadController(uvo.getFile(), "profile");
-        dvo = fileUploadController.FileUpload();
+        dvo = fileUploadController.FileUpdate(olduvo.getUser_profile());
         if(dvo.isSuccess()){
             uvo.setUser_profile(dvo.getData().toString());
             if(userService.putUserProfile(uvo)>0){

@@ -24,6 +24,7 @@ public class UserVO implements UserDetails{
     // 첨부파일을 받음
     private MultipartFile file = null;
     
+    private String user_idx = "";
     private String user_id = "";
     // foreign key
     private String user_level_idx = "";
@@ -111,7 +112,9 @@ public class UserVO implements UserDetails{
         // 전문가(대기)유저
         PRO_PEN("ProPen"),
         // 전문가(승인)유저
-        PRO_APR("ProApr");
+        PRO_APR("ProApr"),
+        // 전문가(거부)유저
+        PRO_DECL("ProDecl");
         
         private String level_name;
         

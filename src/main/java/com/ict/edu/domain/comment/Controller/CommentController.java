@@ -21,11 +21,17 @@ public class CommentController {
     @PostMapping("/join")
     public DataVO joinComment(CommentVO comvo){
         DataVO dvo = new DataVO();
+        // 파일 업로드를 했을때
         if(comvo.getFile() != null && !comvo.getFile().isEmpty()){
+            // 생성자에 파일과 경로(폴더명)
             FileUploadController fileUploadController = new FileUploadController(comvo.getFile(), "comment");
+            // 파일 업로드 (결과는 datavo로 받음)
             dvo = fileUploadController.FileUpload();
-            if(dvo.getData() != null){
+            // 업로드 성공시
+            if(dvo.isSuccess()){
+                // 파일명을 넣는다.
                 comvo.setComment_file(dvo.getData().toString());
+                // commentvo의 file null로 초기화
                 comvo.setFile(null);
             }else{
                 return dvo;

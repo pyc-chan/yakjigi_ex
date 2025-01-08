@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.ict.edu.domain.auth.vo.UserBanVO;
 import com.ict.edu.domain.auth.vo.UserVO;
 
 @Mapper
@@ -28,5 +29,8 @@ public interface AuthMapper {
     
     // 아이디 찾기
     public List<UserVO> userFindByEmail(String user_email);
+    
+    // 정지 유무 확인
+    public UserBanVO getUserBan(String user_idx);
     
 } 

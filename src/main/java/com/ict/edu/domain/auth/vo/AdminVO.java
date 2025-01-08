@@ -14,7 +14,7 @@ public class AdminVO {
     private String admin_nickname = "";
     private String admin_email = "";
     private String admin_phone = "";
-    private Integer admin_out = null;
+    private int admin_out = 0;
     
     private Admin_level_name admin_level_name = Admin_level_name.GENERAL_SUS;
     private String admin_level_desc = "";

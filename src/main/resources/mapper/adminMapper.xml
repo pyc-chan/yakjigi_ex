@@ -44,7 +44,7 @@
     
     <update id="putAdminUpdate" parameterType="AdminVO">
         update admin_db.admin_info_tbl 
-        set
+        <set>
             admin_id = #{admin_id},
             admin_level_idx = #{admin_level_idx},
             admin_pw = #{admin_pw},
@@ -54,13 +54,17 @@
             admin_email = #{admin_email},
             admin_phone = #{admin_phone},
             admin_out = #{admin_out}
+        </set>
         where admin_idx = #{admin_idx}
     </update>
     
-    <delete id="deleteAdmin" parameterType="AdminVO">
-        delete from admin_db.admin_info_tbl
+    <update id="deleteAdmin" parameterType="AdminVO">
+        update admin_db.admin_info_tbl
+        <set>
+            admin_out = 1
+        </set>
         where admin_idx = #{admin_idx}
-    </delete>
+    </update>
     
     <select id="getUserList" resultType="UserVO">
         select * from user_db.user_info_db order by user_idx desc

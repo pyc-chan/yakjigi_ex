@@ -1,5 +1,6 @@
 package com.ict.edu.domain.auth.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,8 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import com.ict.edu.domain.auth.mapper.AuthMapper;
+import com.ict.edu.domain.auth.vo.DataVO;
+import com.ict.edu.domain.auth.vo.UserBanVO;
 import com.ict.edu.domain.auth.vo.UserVO;
 
 
@@ -88,6 +91,21 @@ public class UserDetailService implements UserDetailsService{
     }
     
     
+    // 정지 유무 확인
+    public DataVO getUserBan(String user_idx){
+        DataVO dvo = new DataVO();
+        UserBanVO ubvo = authMapper.getUserBan(user_idx);
+        // end_date()가 없을때(정지가 없을때)
+        if(ubvo.getStop_end_date() == null){
+            dvo.setSuccess(true);
+            dvo.setData(ubvo);
+            return dvo;
+        }else{
+            dvo.setSuccess(false);
+            dvo.setData(ubvo);
+            return dvo;
+        }
+    }
     
 }
 
