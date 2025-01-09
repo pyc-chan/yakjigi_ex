@@ -37,4 +37,9 @@ public class QnaServiceImpl implements QnaService{
         return qnaMapper.getNoAnswerList();
     }
 
+    @Override
+    public List<QnaVO> getUserQnaList(String user_idx) {
+        return qnaMapper.getUserQnaList(user_idx);
+    }
+
 }

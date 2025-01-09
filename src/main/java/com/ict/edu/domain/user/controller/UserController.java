@@ -1,14 +1,18 @@
 package com.ict.edu.domain.user.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ict.edu.common.util.FileUploadController;
+import com.ict.edu.common.util.UserInfoService;
 import com.ict.edu.domain.auth.vo.DataVO;
 import com.ict.edu.domain.auth.vo.UserVO;
+import com.ict.edu.domain.qna.service.QnaService;
+import com.ict.edu.domain.qna.vo.QnaVO;
 import com.ict.edu.domain.user.service.UserService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +30,12 @@ public class UserController {
     
     @Autowired
     private UserService userService;
+    
+    @Autowired
+    private QnaService qnaService;
+    
+    @Autowired
+    private UserInfoService userInfoService;
     
     // 디테일
     @GetMapping("/detail")
@@ -160,5 +170,38 @@ public class UserController {
     }
     
     
+    // 문의 작성
+    @PostMapping("/qna_join")
+    public DataVO postQnaJoin(QnaVO qvo){
+        DataVO dvo = new DataVO();
+        UserVO uvo = userInfoService.getUserVO();
+        qvo.setUser_idx(uvo.getUser_idx());
+        if(qnaService.postQnaJoin(qvo)>0){
+            dvo.setMessage("작성 성공");
+            dvo.setSuccess(true);
+        }else{
+            dvo.setMessage("작성 실패");
+            dvo.setSuccess(false);
+            dvo.setData(qvo);
+        }
+        return dvo;
+    }
+    
+    // 사용자가 작성한 리스트
+    @GetMapping("/qna_user_list")
+    public DataVO getUserQnaList(){
+        DataVO dvo = new DataVO();
+        UserVO uvo = userInfoService.getUserVO();
+        List<QnaVO> list = qnaService.getUserQnaList(uvo.getUser_idx());
+        if(list != null && list.size()>0){
+            dvo.setSuccess(true);
+            dvo.setMessage("유저 Qna 리스트 불러오기 완료");
+            dvo.setData(list);
+        }else{
+            dvo.setMessage("작성한 Qna가 없습니다.");
+            dvo.setSuccess(false);
+        }
+        return dvo;
+    }
     
 }

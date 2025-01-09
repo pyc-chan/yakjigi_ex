@@ -50,9 +50,19 @@ public class AdminServiceImpl implements AdminService{
         return adminMapper.getUserList();
     }
     
+    @Override
     // 승인 대기중인 전문가 유저
     public List<UserVO> getProPenUser(String user_level_idx) {
         return adminMapper.getProPenUser(user_level_idx);
     }
+    
+    
+    // 관리자 로그인
+    @Override
+    public AdminVO getAdminLogin(String admin_id) {
+        return adminMapper.getAdminLogin(admin_id);
+    }
+    
+    
 
 }

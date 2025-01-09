@@ -13,9 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ict.edu.common.util.GravatarService;
+import com.ict.edu.domain.admin.service.AdminService;
 import com.ict.edu.domain.auth.service.AuthAPIService;
 import com.ict.edu.domain.auth.service.EmailService;
 import com.ict.edu.domain.auth.service.UserDetailService;
+import com.ict.edu.domain.auth.vo.AdminVO;
 import com.ict.edu.domain.auth.vo.DataVO;
 import com.ict.edu.domain.auth.vo.UserBanVO;
 import com.ict.edu.domain.auth.vo.UserVO;
@@ -38,10 +40,37 @@ public class AuthController {
     @Autowired
     private EmailService emailService;
     
+    @Autowired
+    private AdminService adminService;
+    
     // 로그인
     @PostMapping("/login")
     public DataVO userLogin(UserVO uvo){
         DataVO dvo = new DataVO();
+        AdminVO avo = adminService.getAdminLogin(uvo.getUser_id());
+        Map<String, String> request = new HashMap<>();
+        if(avo.getAdmin_idx() != null && !avo.getAdmin_idx().isEmpty()){
+            if(BCrypt.checkpw(uvo.getUser_pw(), avo.getAdmin_pw())){
+                if(avo.getAdmin_level_idx().equals("3")){
+                    dvo.setMessage("활동이 정지된 계정입니다.");
+                    dvo.setSuccess(false);
+                    return dvo;
+                }else if(avo.getAdmin_level_idx().equals("2")){
+                    request.put("role","GeneralApr");
+                }else if(avo.getAdmin_level_idx().equals("1")){
+                    request.put("role","Super");
+                }
+                request.put("user_id", avo.getAdmin_id());
+                String token = authAPIService.generateToken(request);
+                dvo.setData(token);
+                dvo.setSuccess(true);
+                dvo.setMessage("관리자 계정 로그인 성공");
+                return dvo;
+            }else{
+                dvo.setSuccess(false);
+                dvo.setMessage("아이디 혹은 비밀번호가 다릅니다.");
+            }
+        }
         UserVO dbUvo = userDetailService.getUserDetail(uvo.getUser_id());
         // 아이디 존재여부 확인
         if(dbUvo != null){
@@ -56,8 +85,6 @@ public class AuthController {
                     dvo.setMessage("정지된 상태입니다. 정지 기간 : "+ubvo.getStop_end_date()+" 까지");
                     return dvo;
                 }
-                
-                Map<String, String> request = new HashMap<>();
                 request.put("user_id", uvo.getUser_id());
                 if(dbUvo.getUser_level_idx().equals("1")){
                     request.put("role", "General");
@@ -69,6 +96,7 @@ public class AuthController {
                     request.put("role", "ProDecl");
                 }
                 request.put("user_id", dbUvo.getUser_id());
+                request.put("user_idx", dbUvo.getUser_idx());
                 String token = authAPIService.generateToken(request);
                 dvo.setData(token);
                 dvo.setSuccess(true);
@@ -139,22 +167,21 @@ public class AuthController {
             dvo.setData(list);
         }else{
             dvo.setSuccess(false);
-            dvo.setMessage("아이디 찾기 실패");
+            dvo.setMessage("가입된 아이디가 없습니다.");
         }
         return dvo;
     }
     
     // 비밀번호 찾기
     @PostMapping("/findpw")
-    public DataVO findPw(String user_id){
+    public DataVO findPw(UserVO uvo){
         DataVO dvo = new DataVO();
-        UserVO uvo = userDetailService.getUserDetail(user_id);
-        if(uvo != null){
+        UserVO dbuvo = userDetailService.getUserDetail(uvo.getUser_id());
+        if(dbuvo != null && !dbuvo.getUser_idx().isEmpty()){
             dvo.setSuccess(true);
             dvo.setMessage("비밀번호 찾기 성공");
-            dvo.setData(user_id);
         }else{
-            dvo.setData(user_id);
+            dvo.setData(uvo);
             dvo.setMessage("아이디 혹은 이메일이 다릅니다.");
             dvo.setSuccess(false);
         }

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace는 반드시 mapper 위치로 설정해야 된다. -->
+<mapper namespace="package com.ict.edu.domain.counsel.mapper">
+
+    <!-- 상담 리스트 -->
+    <select id="getCounselList" resultType="CounselVO">
+        SELECT * FROM board_db.counsel_tbl WHERE counsel_delete = 0
+    </select>
+
+    <!-- 상담 디테일 -->
+    <select id="getCounselDetail" parameterType="string" resultType="CounselVO">
+        SELECT * FROM board_db.counsel_tbl WHERE counsel_idx = #{counsel_idx} AND counsel_delete = 0
+    </select>
+
+    <!-- 상담 작성 -->
+    <insert id="postCounselJoin" parameterType="CounselVO">
+        INSERT INTO board_db.counsel_tbl (
+            user_idx, question_title, question_content, question_date, counsel_open, counsel_delete
+        ) VALUES (
+            #{user_idx}, #{question_title}, #{question_content}, CURRENT_DATE, #{counsel_open}, #{counsel_delete}
+        )
+    </insert>
+
+    <!-- 상담 수정 -->
+    <update id="putCounselUpdate" parameterType="CounselVO">
+        UPDATE board_db.counsel_tbl
+        SET question_title = #{question_title}, question_content = #{question_content}
+        WHERE counsel_idx = #{counsel_idx} AND counsel_delete = 0
+    </update>
+
+    <!-- 상담 삭제 -->
+    <update id="putCounselDelete" parameterType="CounselVO">
+        UPDATE board_db.counsel_tbl
+        SET counsel_delete = 1
+        WHERE counsel_idx = #{counsel_idx}
+    </update>
+
+    <!-- 상담 응답 작성 -->
+    <update id="putCounselCommentJoin" parameterType="CounselVO">
+        UPDATE board_db.counsel_tbl
+        SET response_content = #{response_content}, response_date = CURRENT_DATE, counsel_open = 1
+        WHERE counsel_idx = #{counsel_idx} AND counsel_delete = 0
+    </update>
+
+</mapper>

@@ -32,7 +32,6 @@ import com.ict.edu.domain.userdose.vo.UserdoseVO;
 
 @RestController
 @RequestMapping("/api") // 기본 매핑 경로 설정
-@CrossOrigin(origins = "http://localhost:3000") // CORS 허용
 public class UserdoseController {
 
     @Autowired
@@ -95,13 +94,13 @@ public class UserdoseController {
     }
 
     // 캘린더(디비 리스트)
-    @GetMapping("/mybasicboardlog")
+    @GetMapping("/userdoselist")
     public List<UserdoseVO> getUserDoses(@RequestParam String userId) {
         return mybasicboardlogService.getUserDoses(userId);
     }
 
     // 디비 삭제
-    @DeleteMapping("/mybasicboardlog")
+    @DeleteMapping("/userdosedelete")
     public ResponseEntity<Void> deleteDose(@RequestParam String userId, @RequestParam String date) {
         try {
             mybasicboardlogService.deleteDose(userId, date); // 삭제 서비스 호출
@@ -113,7 +112,7 @@ public class UserdoseController {
     }
 
     // 상세 보기
-    @GetMapping("/mybasicboardlog/details")
+    @GetMapping("/userdose/details")
     public List<UserdoseVO> getDetailsByDate(@RequestParam String date, @RequestParam String userId) {
         try {
             return mybasicboardlogService.getDetailsByDateAndUser(date, userId);
@@ -124,7 +123,7 @@ public class UserdoseController {
     }
 
     
-    // 디비 저장
+    /* // 디비 저장
     @PostMapping("/mybasicboardlog/save")
     public ResponseEntity<Void> saveMyBasicBoardLog(@RequestBody UserdoseVO requestData) {
         try {
@@ -135,5 +134,5 @@ public class UserdoseController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-    }
+    } */
 }

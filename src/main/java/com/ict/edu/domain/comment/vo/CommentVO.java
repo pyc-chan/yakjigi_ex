@@ -23,7 +23,7 @@ public class CommentVO {
     private String notice_idx = null;
     private String qna_idx = null;
     private Comment_board comment_board;
-    
+    private String comment_file_name = null;
     
     public enum Comment_board{
         NOTICE("Notice"),

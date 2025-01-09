@@ -56,6 +56,11 @@
         where qna_answer_stat = 0
     </select>
     
+    <!-- 내가 작성한 Qna -->
+    <select id="getUserQnaList" parameterType="String" resultType="QnaVO">
+        select * from board_db.qna_tbl
+        where user_idx = #{user_idx}
+    </select>
     
 </mapper>
 

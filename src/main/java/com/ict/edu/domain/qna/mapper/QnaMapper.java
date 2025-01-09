@@ -22,4 +22,7 @@ public interface QnaMapper {
     
     // 답변 안된 리스트
     List<QnaVO> getNoAnswerList();
+    
+    // 내가 작성한 리스트
+    List<QnaVO> getUserQnaList(String user_idx);
 }

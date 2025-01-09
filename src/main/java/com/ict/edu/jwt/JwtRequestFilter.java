@@ -37,14 +37,14 @@ public class JwtRequestFilter extends OncePerRequestFilter{
         
         // 요청 헤더에서 Authorization 값 확인
         final String requestTokenHeader = request.getHeader("Authorization");
-        String username = null;
+        String username = null; 
         String jwtToken = null;
         
         // 토큰이 있으며 Authorization 안에 bearer 로 시작
         if(requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")){
             // 토큰추출 ("bearer "를 제하고 그 이후부터)
             jwtToken = requestTokenHeader.substring(7);
-            log.info(("JwtRequestFilter 추출 메서드\n"));
+            log.info(("JwtRequestFilter 추출 메서드\n"));   
             
             try {
                 // 이름추출 (id)

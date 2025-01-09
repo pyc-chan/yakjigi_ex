@@ -9,17 +9,12 @@ import com.ict.edu.domain.Sub303.vo.Sub303VO;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000") // React 개발 서버 URL
 @RequestMapping("/api")
 public class Sub303Controller {
-
-    private final Sub303Service sub303Service;
-
+    
     @Autowired
-    public Sub303Controller(Sub303Service sub303Service) {
-        this.sub303Service = sub303Service;
-    }
-
+    private Sub303Service sub303Service;
+    
     // 도시 목록 조회
     @GetMapping("/getCities")
     public List<String> getCities() {

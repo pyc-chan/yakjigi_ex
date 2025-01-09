@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class AdminVO {
+    private String admin_idx = "";
     private String admin_id = "";
     private String admin_level_idx = "";
     private String admin_pw = "";
@@ -17,7 +18,6 @@ public class AdminVO {
     private int admin_out = 0;
     
     private Admin_level_name admin_level_name = Admin_level_name.GENERAL_SUS;
-    private String admin_level_desc = "";
     
     public enum Admin_level_name{
         // 슈퍼관리자

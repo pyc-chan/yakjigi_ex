@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -50,22 +49,6 @@ public class QnaController {
         dvo.setData(map);
         return dvo;
     }
-    
-    // 문의 작성
-    @PostMapping("/join")
-    public DataVO postQnaJoin(QnaVO qvo){
-        DataVO dvo = new DataVO();
-        if(qnaService.postQnaJoin(qvo)>0){
-            dvo.setMessage("작성 성공");
-            dvo.setSuccess(true);
-        }else{
-            dvo.setMessage("작성 실패");
-            dvo.setSuccess(false);
-            dvo.setData(qvo);
-        }
-        return dvo;
-    }
-    
     
     
 }

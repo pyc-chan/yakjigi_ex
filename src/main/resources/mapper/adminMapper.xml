@@ -70,6 +70,8 @@
         select * from user_db.user_info_db order by user_idx desc
     </select>
     
-    
+    <select id="getAdminLogin" resultType="AdminVO" parameterType="String">
+        select * from admin_db.admin_info_tbl where admin_id = #{admin_id}
+    </select>
     
 </mapper>

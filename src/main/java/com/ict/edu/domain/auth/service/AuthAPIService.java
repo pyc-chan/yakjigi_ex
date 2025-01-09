@@ -25,14 +25,12 @@ public class AuthAPIService {
     
     // JWT를 생성한다.
     public String generateToken(Map<String, String> request) {
-        
-        String role = request.get("role");
         String user_id = request.get("user_id");
-        
         // role에 user를 넣는다
         Map<String, Object> claims = new HashMap<>();
-        claims.put("role", role);
-        
+        claims.put("role", request.get("role"));
+        claims.put("user_idx", request.get("user_idx"));
+        claims.put("user_id", user_id);
         return jwtUtil.generateToken(user_id,claims);
     }
     
