@@ -1,6 +1,5 @@
 package com.ict.edu.domain.comment.Controller;
 
-import java.time.LocalDate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

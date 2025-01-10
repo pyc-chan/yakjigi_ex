@@ -1,4 +1,4 @@
-package com.ict.edu.domain.notice.controller;
+/* package com.ict.edu.domain.notice.controller;
 
 import java.util.List;
 
@@ -29,3 +29,4 @@ public class NoticeController {
     // 공지 삭제(실제로는 update)
     int putNoticeDelete(NoticeVO nvo);
 }
+ */
