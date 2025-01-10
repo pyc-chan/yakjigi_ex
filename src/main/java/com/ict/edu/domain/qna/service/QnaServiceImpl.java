@@ -3,10 +3,12 @@ package com.ict.edu.domain.qna.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.ict.edu.domain.qna.mapper.QnaMapper;
 import com.ict.edu.domain.qna.vo.QnaVO;
 
+@Service
 public class QnaServiceImpl implements QnaService{
     
     @Autowired

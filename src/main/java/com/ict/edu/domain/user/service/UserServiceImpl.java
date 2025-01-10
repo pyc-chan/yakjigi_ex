@@ -48,12 +48,12 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public int putUserPassWord(UserVO uvo) {
-        return putUserPassWord(uvo);
+        return userMapper.putUserPassWord(uvo);
     }
 
     @Override
     public int postUserJoin(UserVO uvo) {
-        return postUserJoin(uvo);
+        return userMapper.postUserJoin(uvo);
     }
 
     @Override

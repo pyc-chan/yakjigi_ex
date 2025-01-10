@@ -18,16 +18,17 @@
             fna_delete
         )
         values(
-            admin_idx,
-            fna_question,
-            fna_answer,
+            #{admin_idx},
+            #{fna_question},
+            #{fna_answer},
             CURRENT_DATE,
             0
         )
     </insert>
+
     
     <update id="putFnaUpdate" parameterType="FnaVO">
-        update 
+        update board_db.fna_tbl 
         <set>
             <if test="admin_idx != null">
                 admin_idx = #{admin_idx},
@@ -42,9 +43,10 @@
         </set>
         where fna_idx = #{fna_idx}
     </update>
+
     
     <update id="putFnaDelete" parameterType="String">
-        update
+        update board_db.fna_tbl 
         <set>
             fna_delete = 1,
             fna_out_date = CURRENT_DATE

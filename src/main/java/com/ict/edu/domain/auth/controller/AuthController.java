@@ -1,5 +1,6 @@
 package com.ict.edu.domain.auth.controller;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,8 +8,9 @@ import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,11 +47,11 @@ public class AuthController {
     
     // 로그인
     @PostMapping("/login")
-    public DataVO userLogin(UserVO uvo){
+    public DataVO userLogin(@RequestBody UserVO uvo){
         DataVO dvo = new DataVO();
         AdminVO avo = adminService.getAdminLogin(uvo.getUser_id());
         Map<String, String> request = new HashMap<>();
-        if(avo.getAdmin_idx() != null && !avo.getAdmin_idx().isEmpty()){
+        if(avo != null && !avo.getAdmin_idx().isEmpty()){
             if(BCrypt.checkpw(uvo.getUser_pw(), avo.getAdmin_pw())){
                 if(avo.getAdmin_level_idx().equals("3")){
                     dvo.setMessage("활동이 정지된 계정입니다.");
@@ -78,11 +80,17 @@ public class AuthController {
             if(BCrypt.checkpw(uvo.getUser_pw(), dbUvo.getUser_pw())){
                 // 정지 여부 확인
                 dvo = userDetailService.getUserBan(dbUvo.getUser_level_idx());
-                UserBanVO ubvo = (UserBanVO) dvo.getData();
+                List<UserBanVO> listubvo = (List<UserBanVO>)dvo.getData();
                 // 정지 상태라면
                 if(!dvo.isSuccess()){
                     dvo.setSuccess(false);
-                    dvo.setMessage("정지된 상태입니다. 정지 기간 : "+ubvo.getStop_end_date()+" 까지");
+                    LocalDate userbandate = LocalDate.now();
+                    for (UserBanVO userBanVO : listubvo) {
+                        if(userBanVO.getStop_end_date().isAfter(userbandate)){
+                            userbandate = userBanVO.getStop_end_date();
+                        }
+                    }
+                    dvo.setMessage("정지된 상태입니다. 정지 기간 : "+userbandate+" 까지");
                     return dvo;
                 }
                 request.put("user_id", uvo.getUser_id());
@@ -111,7 +119,7 @@ public class AuthController {
     
     // 회원가입/아이디 찾기/비밀번호 찾기시 이메일 확인
     @PostMapping("/emailchk")
-	public DataVO emailchk(UserVO uvo) {
+	public DataVO emailchk(@RequestBody UserVO uvo) {
         DataVO dvo = new DataVO();
         // 임시번호 6자리 만들기
         Random random = new Random();
@@ -140,11 +148,13 @@ public class AuthController {
     
     // 회원가입
     @PostMapping("/join")
-    public DataVO userJoin(UserVO uvo){
+    public DataVO userJoin(@RequestBody UserVO uvo){
         DataVO dvo = new DataVO();
+        uvo.setUser_pw(BCrypt.hashpw(uvo.getUser_pw(), BCrypt.gensalt()));
         GravatarService gravatarService = new GravatarService();
         String profileUrl = gravatarService.getGravatarUrl(uvo.getUser_id());
         uvo.setUser_profile(profileUrl);
+        uvo.setUser_profile_name("Gravatar_"+uvo.getUser_id());
         int num = userService.postUserJoin(uvo);
         if(num >0){
             dvo.setMessage("회원가입 성공");
@@ -176,6 +186,7 @@ public class AuthController {
     @PostMapping("/findpw")
     public DataVO findPw(UserVO uvo){
         DataVO dvo = new DataVO();
+        uvo.setUser_pw(BCrypt.hashpw(uvo.getUser_pw(), BCrypt.gensalt()));
         UserVO dbuvo = userDetailService.getUserDetail(uvo.getUser_id());
         if(dbuvo != null && !dbuvo.getUser_idx().isEmpty()){
             dvo.setSuccess(true);
@@ -188,23 +199,11 @@ public class AuthController {
         return dvo;
     }
     
-    // 비밀번호 수정 
-    @PutMapping("/password")
-    DataVO putUserPassWord(UserVO uvo){
-        DataVO dvo = new DataVO();
-        String password = BCrypt.hashpw(uvo.getUser_pw(), BCrypt.gensalt());
-            uvo.setUser_pw(password);
-            if(userService.putUserPassWord(uvo)>0){
-                dvo.setMessage("비밀번호 변경 성공");
-                dvo.setSuccess(true);
-                dvo.setData(uvo);
-            }else{
-                dvo.setSuccess(false);
-                dvo.setMessage("비밀번호 변경 실패");
-            }
+    // 아이디 중복 확인
+    @GetMapping("/idchk")
+    public DataVO getIDChk(String user_id){
+        DataVO dvo = userDetailService.getIDChk(user_id);
         return dvo;
     }
-    
-    
     
 }

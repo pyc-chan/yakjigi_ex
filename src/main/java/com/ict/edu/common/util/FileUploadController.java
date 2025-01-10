@@ -54,7 +54,7 @@ public class FileUploadController {
     }
     
     // 업로드 후 성공시 기존 파일 삭제
-    public DataVO FileUpdate(String oldfile){
+    public DataVO FileUpdate(String oldfilename){
         DataVO dvo = new DataVO();
         try {
             // 업로드 실패시 리턴
@@ -65,7 +65,7 @@ public class FileUploadController {
                 }
             }
             // 기존 파일 삭제 시도
-            File existingFile = new File(path, oldfile);
+            File existingFile = new File(path, oldfilename);
             if(existingFile.exists()){
                 boolean isDeleted = existingFile.delete();
                 if(!isDeleted){

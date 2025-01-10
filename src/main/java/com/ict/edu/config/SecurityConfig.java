@@ -56,26 +56,23 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 // url 접근 권한 설정
                 .authorizeHttpRequests(authorize -> authorize
-                    // 인증 없이 접근
+                    // 인증 없이 접근   
                     .requestMatchers(
-                        "/api/**", "/", "/oauth/**", 
+                        "/api/**", "/oauth/**", 
                         "/fna/**", "/download/**", "/auth/**", 
                         "/qna/**" )
                         .permitAll()
                     // 인증 필요
                     .requestMatchers("/admin/**").hasAnyAuthority("GeneralApr", "Super")
-                    .anyRequest().authenticated())
-                    
-                    
+                    .anyRequest().authenticated());
                 // oauth2 설정
-                .oauth2Login(oauth2 -> oauth2
+                /* .oauth2Login(oauth2 -> oauth2
                     // 인증 성공시 호출
                     .successHandler(oAuth2AuthenticationSuccessHandler())
                     // 사용자 정보 엔드포인트를 설정하고 정보를 처리할 서비스 지정
-                    .userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService())))
+                    .userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService()))) */
                     // UsernamePasswordAuthenticationFilter 이전에 실행
-                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-        
+                http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
     @Bean
@@ -91,7 +88,6 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfig = new CorsConfiguration();
-        
         // 허용할 Origin 설정
         corsConfig.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
         // 허용할 http 메서드 설정

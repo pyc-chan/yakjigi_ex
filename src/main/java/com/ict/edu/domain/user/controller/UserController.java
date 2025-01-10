@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ict.edu.common.util.FileUploadController;
 import com.ict.edu.common.util.UserInfoService;
@@ -18,6 +20,7 @@ import com.ict.edu.domain.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -62,13 +65,17 @@ public class UserController {
     
     // 프로필 사진 수정
     @PutMapping("/profile")
-    DataVO putUserProfile(UserVO uvo){
+    DataVO putUserProfile(@RequestParam MultipartFile file, @ModelAttribute UserVO uvo){
         DataVO dvo = new DataVO();
         UserVO olduvo = userService.getUserDetail(uvo.getUser_id());
-        FileUploadController fileUploadController = new FileUploadController(uvo.getFile(), "profile");
-        dvo = fileUploadController.FileUpdate(olduvo.getUser_profile());
+        FileUploadController fileUploadController = new FileUploadController(file, "profile");
+        dvo = fileUploadController.FileUpdate(olduvo.getUser_profile_name());
         if(dvo.isSuccess()){
-            uvo.setUser_profile(dvo.getData().toString());
+            uvo.setUser_profile_name(dvo.getData().toString());
+            StringBuilder sb = new StringBuilder();
+            sb.append("/api/profile/");
+            sb.append(uvo.getUser_profile());
+            uvo.setUser_profile(sb.toString());
             if(userService.putUserProfile(uvo)>0){
                 log.info("프로필 수정 성공");
                 dvo.setSuccess(true);

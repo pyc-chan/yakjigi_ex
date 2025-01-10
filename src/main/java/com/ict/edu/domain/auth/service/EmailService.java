@@ -40,10 +40,10 @@ public class EmailService {
             helper.setSubject("YAKJIGI 인증번호 입니다.");  // 이메일 제목
             helper.setText("<table><tbody>"
             +"<tr><td><h2>메일 인증 </h2></td></tr>"
-            +"<tr><td><h3>Green Spot Finder</h3></td></tr>"
+            +"<tr><td><h3>YAKJIGI</h3></td></tr>"
             +"<tr><td><font size='8px'>인증 번호 안내</font></td></tr>"
             +"<tr><td><font size='10px'>확인번호 : "+randomnumber+"</font></td></tr>"
-            +"</tbody></table>");  // 이메일 본문 (HTML 형식)
+            +"</tbody></table>", true);  // 이메일 본문 (HTML 형식)
             javaMailSender.send(message);  // 이메일 전송
             dvo.setSuccess(true);
             dvo.setMessage("메일이 성공적으로 발송되었습니다.");

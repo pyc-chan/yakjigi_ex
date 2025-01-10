@@ -2,32 +2,66 @@
 <!DOCTYPE mapper
  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
- 
- 
- <mapper namespace="com.ict.edu.domain.user.mapper.UserMapper">
+
+<mapper namespace="com.ict.edu.domain.user.mapper.UserMapper">
     
-    
-    // 닉네임 변경
-    public int putUserNickName(UserVO uvo);
-    
-    // 프로필 사진 수정
-    public int putUserProfile(UserVO uvo);
-    
-    // 이름 수정
-    public int putUserName(UserVO uvo);
-    
-    // 성별 수정
-    public int putUserGender(UserVO uvo);
-    
-    // 휴대전화 번호 수정
-    public int putUserPhone(UserVO uvo);
-    
-    // 비밀번호 수정
-    int putUserPassWord(UserVO uvo);
-    
-    // 회원가입
-    int postUserJoin(UserVO uvo);
-    
-    // 비밀번호 확인
-    String getUserPassWord(String user_id);
- </mapper>
+    <!-- 닉네임 변경 -->
+    <update id="putUserNickName" parameterType="UserVO">
+        UPDATE user_db.user_info_tbl
+        SET user_nickname = #{user_nickname}
+        WHERE user_idx = #{user_idx}
+    </update>
+
+    <!-- 프로필 사진 수정 -->
+    <update id="putUserProfile" parameterType="UserVO">
+        UPDATE user_db.user_info_tbl
+        SET user_profile = #{user_profile},
+        user_profile_name = #{user_profile_name}
+        WHERE user_idx = #{user_idx}
+    </update>
+
+    <!-- 이름 수정 -->
+    <update id="putUserName" parameterType="UserVO">
+        UPDATE user_db.user_info_tbl
+        SET user_name = #{user_name}
+        WHERE user_idx = #{user_idx}
+    </update>
+
+    <!-- 성별 수정 -->
+    <update id="putUserGender" parameterType="UserVO">
+        UPDATE user_db.user_info_tbl
+        SET user_gender = #{user_gender}
+        WHERE user_idx = #{user_idx}
+    </update>
+
+    <!-- 휴대전화 번호 수정 -->
+    <update id="putUserPhone" parameterType="UserVO">
+        UPDATE user_db.user_info_tbl
+        SET user_phone = #{user_phone}
+        WHERE user_idx = #{user_idx}
+    </update>
+
+    <!-- 비밀번호 수정 -->
+    <update id="putUserPassWord" parameterType="UserVO">
+        UPDATE user_db.user_info_tbl
+        SET user_pw = #{user_pw}
+        WHERE user_idx = #{user_idx}
+    </update>
+
+    <!-- 회원가입 -->
+    <insert id="postUserJoin" parameterType="UserVO">
+        INSERT INTO user_db.user_info_tbl (
+            user_id, user_pw, user_name, user_nickname, user_profile, user_profile_name, user_gender, user_email, user_phone, user_reg_date
+        ) VALUES (
+            #{user_id}, #{user_pw}, #{user_name}, #{user_nickname}, #{user_profile}, #{user_profile_name}, #{user_gender}, #{user_email}, #{user_phone}, CURRENT_DATE
+        )
+    </insert>
+
+    <!-- 비밀번호 확인 -->
+    <select id="getUserPassWord" parameterType="String" resultType="String">
+        SELECT user_pw
+        FROM user_db.user_info_tbl
+        WHERE user_id = #{user_id}
+    </select>
+
+</mapper>

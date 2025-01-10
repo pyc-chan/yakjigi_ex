@@ -45,15 +45,15 @@
     <update id="putAdminUpdate" parameterType="AdminVO">
         update admin_db.admin_info_tbl 
         <set>
-            admin_id = #{admin_id},
-            admin_level_idx = #{admin_level_idx},
-            admin_pw = #{admin_pw},
-            admin_profile = #{admin_profile},
-            admin_name = #{admin_name},
-            admin_nickname = #{admin_nickname},
-            admin_email = #{admin_email},
-            admin_phone = #{admin_phone},
-            admin_out = #{admin_out}
+            <if test="admin_id != null">admin_id = #{admin_id},</if>
+            <if test="admin_level_idx != null">admin_level_idx = #{admin_level_idx},</if>
+            <if test="admin_pw != null">admin_pw = #{admin_pw},</if>
+            <if test="admin_profile != null">admin_profile = #{admin_profile},</if>
+            <if test="admin_name != null">admin_name = #{admin_name},</if>
+            <if test="admin_nickname != null">admin_nickname = #{admin_nickname},</if>
+            <if test="admin_email != null">admin_email = #{admin_email},</if>
+            <if test="admin_phone != null">admin_phone = #{admin_phone},</if>
+            <if test="admin_out != null">admin_out = #{admin_out}</if>
         </set>
         where admin_idx = #{admin_idx}
     </update>
@@ -72,6 +72,13 @@
     
     <select id="getAdminLogin" resultType="AdminVO" parameterType="String">
         select * from admin_db.admin_info_tbl where admin_id = #{admin_id}
+    </select>
+    
+    <!-- 관리자 아이디 중복 체크 -->
+    <select id="getAdminIDChk" parameterType="String" resultType="int">
+        SELECT COUNT(*) 
+        FROM admin_db.admin_info_tbl
+        WHERE admin_id = #{user_id}
     </select>
     
 </mapper>

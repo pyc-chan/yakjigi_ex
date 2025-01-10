@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
@@ -21,15 +20,13 @@ import lombok.ToString;
 @ToString(exclude = "user_pw")
 public class UserVO implements UserDetails{
     
-    // 첨부파일을 받음
-    private MultipartFile file = null;
-    
     private String user_idx = "";
     private String user_id = "";
     // foreign key
     private String user_level_idx = "";
     private String user_pw = "";
     private String user_profile = "";
+    private String user_profile_name = "";
     private LocalDate user_reg_date = LocalDate.of(2000, 1, 1);
     
     // SNS에서 가져오는 데이터는 name에 저장하고 nickname을 설정하게 함

@@ -34,7 +34,17 @@ public class JwtRequestFilter extends OncePerRequestFilter{
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         log.info("JwtRequestFilter 호출\n");
-        
+        String requestURI = request.getRequestURI();
+        if (requestURI.startsWith("/api/") || 
+            requestURI.startsWith("/oauth/") || 
+            requestURI.startsWith("/fna/") || 
+            requestURI.startsWith("/download/") || 
+            requestURI.startsWith("/auth/") || 
+            requestURI.startsWith("/qna/")) {
+            
+            filterChain.doFilter(request, response);  // 필터를 통과시킴
+            return;
+        }
         // 요청 헤더에서 Authorization 값 확인
         final String requestTokenHeader = request.getHeader("Authorization");
         String username = null; 

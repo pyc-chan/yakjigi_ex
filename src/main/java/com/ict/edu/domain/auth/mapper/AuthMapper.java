@@ -31,6 +31,8 @@ public interface AuthMapper {
     public List<UserVO> userFindByEmail(String user_email);
     
     // 정지 유무 확인
-    public UserBanVO getUserBan(String user_idx);
+    public List<UserBanVO> getUserBan(String user_idx);
     
+    // 유저 아이디 중복 확인
+    public int getUserIDChk(String user_id);
 } 

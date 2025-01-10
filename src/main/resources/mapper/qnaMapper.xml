@@ -12,9 +12,10 @@
     </select>
     
     <!-- QnA 상세 조회 -->
-    <select id="getQnaDetail" resultType="QnaVO" parameterType="string">
+    <select id="getQnaDetail" resultType="QnaVO" parameterType="String">
         select * from board_db.qna_tbl where qna_idx = #{qna_idx}
     </select>
+
     
     <!-- QnA 등록 -->
     <insert id="postQnaJoin" parameterType="QnaVO">

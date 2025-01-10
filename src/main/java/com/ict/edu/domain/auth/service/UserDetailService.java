@@ -1,5 +1,6 @@
 package com.ict.edu.domain.auth.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
+import com.ict.edu.domain.admin.mapper.AdminMapper;
 import com.ict.edu.domain.auth.mapper.AuthMapper;
 import com.ict.edu.domain.auth.vo.DataVO;
 import com.ict.edu.domain.auth.vo.UserBanVO;
@@ -21,6 +23,9 @@ import com.ict.edu.domain.auth.vo.UserVO;
 public class UserDetailService implements UserDetailsService{
     @Autowired
     private AuthMapper authMapper;
+    
+    @Autowired
+    private AdminMapper adminMapper;
     
     // 아이디로 찾기
     @Override
@@ -93,17 +98,40 @@ public class UserDetailService implements UserDetailsService{
     // 정지 유무 확인
     public DataVO getUserBan(String user_idx){
         DataVO dvo = new DataVO();
-        UserBanVO ubvo = authMapper.getUserBan(user_idx);
+        List<UserBanVO> ubvo = authMapper.getUserBan(user_idx);
         // end_date()가 없을때(정지가 없을때)
-        if(ubvo.getStop_end_date() == null){
+        if(ubvo == null){
             dvo.setSuccess(true);
             dvo.setData(ubvo);
             return dvo;
         }else{
-            dvo.setSuccess(false);
+            for (UserBanVO userBanVO : ubvo) {
+                if(userBanVO.getStop_end_date().isAfter(LocalDate.now())){
+                    dvo.setSuccess(false);
+                    dvo.setData(ubvo);
+                    return dvo;
+                    
+                }
+            }
+            dvo.setSuccess(true);
             dvo.setData(ubvo);
             return dvo;
         }
+    }
+    
+    // 아이디 중복 확인
+    public DataVO getIDChk(String user_id){
+        DataVO dvo = new DataVO();
+        if(adminMapper.getAdminIDChk(user_id) == 0){
+            if(authMapper.getUserIDChk(user_id) == 0){
+                dvo.setSuccess(true);
+                dvo.setMessage("중복이 없습니다.");
+                return dvo;
+            }
+        }
+        dvo.setSuccess(false);
+        dvo.setMessage("중복된 아이디가 있습니다.");
+        return dvo;
     }
     
 }

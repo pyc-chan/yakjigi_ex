@@ -2,10 +2,14 @@ package com.ict.edu.domain.comment.Controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ict.edu.common.util.FileUploadController;
 import com.ict.edu.common.util.UserInfoService;
@@ -24,7 +28,7 @@ public class CommentController {
     private CommentService commentService;
     
     @PostMapping("/join")
-    public DataVO joinComment(CommentVO comvo){
+    public DataVO joinComment(@ModelAttribute CommentVO comvo, @RequestParam MultipartFile file){
         DataVO dvo = new DataVO();
         UserVO uvo = userInfoService.getUserVO();
         String user_idx = uvo.getUser_idx();
