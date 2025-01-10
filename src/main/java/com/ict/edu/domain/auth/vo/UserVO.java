@@ -24,7 +24,7 @@ public class UserVO implements UserDetails{
     private String user_id = "";
     // foreign key
     private String user_level_idx = "";
-    private String user_pw = "";
+    private String user_pw = null;
     private String user_profile = "";
     private String user_profile_name = "";
     private LocalDate user_reg_date = LocalDate.of(2000, 1, 1);

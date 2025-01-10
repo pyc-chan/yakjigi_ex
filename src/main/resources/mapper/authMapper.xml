@@ -75,6 +75,7 @@
             user_level_idx,
             <if test="user_pw != null">user_pw,</if>
             user_profile,
+            user_profile_name,
             user_reg_date,
             user_name,
             user_nickname,
@@ -92,6 +93,7 @@
             #{user_level_idx},
             <if test="user_pw != null">#{user_pw},</if>
             #{user_profile},
+            #{user_profile_name},
             CURRENT_DATE,
             #{user_name},
             #{user_nickname},

@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 
@@ -58,7 +59,7 @@ public class AdminController {
     
     // 답변 작성
     @PutMapping("/qna_answer")
-    public DataVO putQnaUpdate(QnaVO qvo){
+    public DataVO putQnaUpdate(@RequestBody QnaVO qvo){
         DataVO dvo = new DataVO();
         qvo.setQna_answer_stat(1);
         if(qnaService.putQnaUpdate(qvo)>0){
@@ -81,7 +82,7 @@ public class AdminController {
     
     // fna 작성
     @PostMapping("/fna_join")
-    public DataVO postFnaJoin(FnaVO fvo){
+    public DataVO postFnaJoin(@RequestBody FnaVO fvo){
         DataVO dvo = new DataVO();
         if(fnaService.postFnaJoin(fvo)>0){
             dvo.setMessage("작성 성공");
@@ -95,7 +96,7 @@ public class AdminController {
     
     // fna 수정
     @PutMapping("/fna_update")
-    public DataVO putFnaUpdate(FnaVO fvo){
+    public DataVO putFnaUpdate(@RequestBody FnaVO fvo){
         DataVO dvo = new DataVO();
         if(fnaService.putFnaUpdate(fvo)>0){
             dvo.setSuccess(true);
@@ -109,7 +110,7 @@ public class AdminController {
     
     // fna 삭제
     @PutMapping("/fna_delete")
-    public DataVO putFnaDelete(FnaVO fvo){
+    public DataVO putFnaDelete(@RequestBody FnaVO fvo){
         DataVO dvo = new DataVO();
         if(fnaService.putFnaDelete(fvo)>0){
             dvo.setSuccess(true);

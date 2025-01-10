@@ -53,7 +53,8 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public int postUserJoin(UserVO uvo) {
-        return userMapper.postUserJoin(uvo);
+        System.out.println("유저 서비스 임플 도착");
+        return authMapper.insertUserJoin(uvo);
     }
 
     @Override

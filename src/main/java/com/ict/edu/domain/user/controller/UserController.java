@@ -47,9 +47,11 @@ public class UserController {
     }
     
     // 닉네임 수정
-    @PutMapping("/nickname")
-    public DataVO putUserNickName(UserVO uvo){
+    @PutMapping("/update_nickname")
+    public DataVO putUserNickName(String user_nickname){
         DataVO dvo = new DataVO();
+        UserVO uvo = userInfoService.getUserVO();
+        uvo.setUser_nickname(user_nickname);
         // 작업 성공
         if(userService.putUserNickName(uvo) > 0){
             log.info("닉네임 수정 성공");
@@ -64,12 +66,13 @@ public class UserController {
     }
     
     // 프로필 사진 수정
-    @PutMapping("/profile")
-    DataVO putUserProfile(@RequestParam MultipartFile file, @ModelAttribute UserVO uvo){
+    @PutMapping("/update_profile")
+    public DataVO putUserProfile(@RequestParam MultipartFile file){
         DataVO dvo = new DataVO();
+        UserVO uvo = userInfoService.getUserVO();
         UserVO olduvo = userService.getUserDetail(uvo.getUser_id());
         FileUploadController fileUploadController = new FileUploadController(file, "profile");
-        dvo = fileUploadController.FileUpdate(olduvo.getUser_profile_name());
+        dvo = fileUploadController.fileUpdate(olduvo.getUser_profile_name());
         if(dvo.isSuccess()){
             uvo.setUser_profile_name(dvo.getData().toString());
             StringBuilder sb = new StringBuilder();
@@ -90,8 +93,8 @@ public class UserController {
     }
     
     // 이름 수정
-    @PutMapping("/name")
-    DataVO putUserName(UserVO uvo){
+    @PutMapping("/update_name")
+    public DataVO putUserName(@RequestBody UserVO uvo){
         DataVO dvo = new DataVO();
         if(userService.putUserName(uvo)>0){
             log.info("이름 수정 성공");
@@ -106,8 +109,8 @@ public class UserController {
     }
     
     // 성별 수정
-    @PutMapping("/gender")
-    DataVO putUserGender(UserVO uvo){
+    @PutMapping("/update_gender")
+    DataVO putUserGender(@RequestBody UserVO uvo){
         DataVO dvo = new DataVO();
         if(userService.putUserGender(uvo)>0){
             log.info("성별 수정 성공");
@@ -122,8 +125,8 @@ public class UserController {
     }
     
     // 휴대전화 번호 수정
-    @PutMapping("/phone")
-    DataVO putUserPhone(UserVO uvo){
+    @PutMapping("/update_phone")
+    DataVO putUserPhone(@RequestBody UserVO uvo){
         DataVO dvo = new DataVO();
         if(userService.putUserPhone(uvo)>0){
             log.info("번호 수정 성공");
@@ -138,9 +141,10 @@ public class UserController {
     }
     
     // 비밀번호 수정 
-    @PutMapping("/password")
-    DataVO putUserPassWord(UserVO uvo, @RequestBody String user_new_pw){
+    @PutMapping("/update_password")
+    DataVO putUserPassWord(String user_pw, String user_new_pw){
         DataVO dvo = new DataVO();
+        UserVO uvo = userInfoService.getUserVO();
         String password = userService.getUserPassWord(uvo.getUser_id());
         if(BCrypt.checkpw(uvo.getUser_pw(), password)){
             password = BCrypt.hashpw(user_new_pw, BCrypt.gensalt());
@@ -160,26 +164,9 @@ public class UserController {
         return dvo;
     }
     
-    // 회원가입
-    @PostMapping("/join")
-    DataVO postUserJoin(UserVO uvo){
-        DataVO dvo = new DataVO();
-        if(userService.postUserJoin(uvo)>0){
-            log.info("이름 수정 성공");
-            dvo.setSuccess(true);
-            dvo.setMessage("이름이 성공적으로 수정되었습니다.");
-        }else{
-            log.info("이름 수정 실패");
-            dvo.setSuccess(false);
-            dvo.setMessage("이름 수정에 실패하였습니다.");
-        }
-        return dvo;
-    }
-    
-    
     // 문의 작성
     @PostMapping("/qna_join")
-    public DataVO postQnaJoin(QnaVO qvo){
+    public DataVO postQnaJoin(@RequestBody QnaVO qvo){
         DataVO dvo = new DataVO();
         UserVO uvo = userInfoService.getUserVO();
         qvo.setUser_idx(uvo.getUser_idx());

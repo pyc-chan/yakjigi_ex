@@ -26,7 +26,7 @@ public class FileUploadController {
         path = uploadDir+"/"+filepath;
     }
     
-    public DataVO FileUpload(){
+    public DataVO fileUpload(){
         DataVO dvo = new DataVO();
         try {
             
@@ -54,20 +54,20 @@ public class FileUploadController {
     }
     
     // 업로드 후 성공시 기존 파일 삭제
-    public DataVO FileUpdate(String oldfilename){
+    public DataVO fileUpdate(String old_filename){
         DataVO dvo = new DataVO();
         try {
             // 업로드 실패시 리턴
-            if(file != null){
-                dvo = FileUpload();
+            if(file != null && !file.isEmpty()){
+                dvo = fileUpload();
                 if(!dvo.isSuccess()){
                     return dvo;
                 }
             }
             // 기존 파일 삭제 시도
-            File existingFile = new File(path, oldfilename);
-            if(existingFile.exists()){
-                boolean isDeleted = existingFile.delete();
+            File old_file = new File(path, old_filename);
+            if(old_file.exists()){
+                boolean isDeleted = old_file.delete();
                 if(!isDeleted){
                     dvo.setSuccess(false);
                     dvo.setMessage("기존 파일 삭제 실패");
@@ -80,6 +80,25 @@ public class FileUploadController {
         } catch (Exception e) {
             dvo.setSuccess(false);
             dvo.setMessage("업데이트 실패");
+        }
+        return dvo;
+    }
+    
+    // 파일 삭제
+    public DataVO fileDelete(String old_filename){
+        DataVO dvo = new DataVO();
+        File old_file = new File(path, old_filename);
+        if(old_file.exists()){
+            boolean isDeleted = old_file.delete();
+            if(!isDeleted){
+                dvo.setSuccess(false);
+                dvo.setMessage("파일 삭제 실패");
+                System.out.println("파일 삭제 실패");
+            }else{
+                dvo.setSuccess(true);
+                dvo.setMessage("파일 삭제 성공");
+                System.out.println("파일 삭제 성공");
+            }
         }
         return dvo;
     }

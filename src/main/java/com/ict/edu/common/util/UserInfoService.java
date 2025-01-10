@@ -27,7 +27,7 @@ public class UserInfoService {
             UserVO uvo = userService.getUserDetail(user_id);
             return uvo;
         }
-
+        
         // 인증 정보가 없을 경우
         return null;
     }

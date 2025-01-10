@@ -150,12 +150,38 @@ public class AuthController {
     @PostMapping("/join")
     public DataVO userJoin(@RequestBody UserVO uvo){
         DataVO dvo = new DataVO();
+        System.out.println("회원가입 컨트롤러 도착");
         uvo.setUser_pw(BCrypt.hashpw(uvo.getUser_pw(), BCrypt.gensalt()));
         GravatarService gravatarService = new GravatarService();
         String profileUrl = gravatarService.getGravatarUrl(uvo.getUser_id());
         uvo.setUser_profile(profileUrl);
-        uvo.setUser_profile_name("Gravatar_"+uvo.getUser_id());
+        /* System.out.println("DB가기 전");
+        System.out.println("사용자 인덱스: " + uvo.getUser_idx());
+        System.out.println("사용자 ID: " + uvo.getUser_id());
+        System.out.println("사용자 레벨 인덱스: " + uvo.getUser_level_idx());
+        System.out.println("사용자 비밀번호: " + uvo.getUser_pw());
+        System.out.println("사용자 프로필: " + uvo.getUser_profile());
+        System.out.println("사용자 프로필 이름: " + uvo.getUser_profile_name());
+        System.out.println("사용자 등록일: " + uvo.getUser_reg_date());
+        System.out.println("사용자 이름: " + uvo.getUser_name());
+        System.out.println("사용자 닉네임: " + uvo.getUser_nickname());
+        System.out.println("제공자: " + uvo.getProvider());
+        System.out.println("사용자 카카오: " + uvo.getUser_kakao());
+        System.out.println("사용자 네이버: " + uvo.getUser_naver());
+        System.out.println("사용자 구글: " + uvo.getUser_google());
+        System.out.println("사용자 생일: " + uvo.getUser_birth_date());
+        System.out.println("사용자 성별: " + uvo.getUser_gender().getGender());
+        System.out.println("사용자 레벨: " + uvo.getUser_level_name().getLevelName());
+        System.out.println("사용자 면허: " + uvo.getUser_license().getLicense());
+        System.out.println("사용자 이메일: " + uvo.getUser_email());
+        System.out.println("사용자 전화번호: " + uvo.getUser_phone());
+        System.out.println("관리자 인덱스: " + uvo.getAdmin_idx());
+        System.out.println("사용자 퇴사일: " + uvo.getUser_out_date());
+        System.out.println("사용자 퇴사 사유: " + uvo.getUser_out_reason());
+        System.out.println("사용자 마지막 로그인: " + uvo.getUser_last_login());
+        System.out.println("사용자 권한: " + uvo.getAuthorities()); */
         int num = userService.postUserJoin(uvo);
+        /* System.out.println("DB갔다옴"); */
         if(num >0){
             dvo.setMessage("회원가입 성공");
             dvo.setSuccess(true);
@@ -184,7 +210,7 @@ public class AuthController {
     
     // 비밀번호 찾기
     @PostMapping("/findpw")
-    public DataVO findPw(UserVO uvo){
+    public DataVO findPw(@RequestBody UserVO uvo){
         DataVO dvo = new DataVO();
         uvo.setUser_pw(BCrypt.hashpw(uvo.getUser_pw(), BCrypt.gensalt()));
         UserVO dbuvo = userDetailService.getUserDetail(uvo.getUser_id());

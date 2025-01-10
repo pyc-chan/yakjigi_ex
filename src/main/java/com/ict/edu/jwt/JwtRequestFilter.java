@@ -41,7 +41,6 @@ public class JwtRequestFilter extends OncePerRequestFilter{
             requestURI.startsWith("/download/") || 
             requestURI.startsWith("/auth/") || 
             requestURI.startsWith("/qna/")) {
-            
             filterChain.doFilter(request, response);  // 필터를 통과시킴
             return;
         }

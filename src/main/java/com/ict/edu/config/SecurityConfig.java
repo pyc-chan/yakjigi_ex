@@ -64,7 +64,7 @@ public class SecurityConfig {
                         .permitAll()
                     // 인증 필요
                     .requestMatchers("/admin/**").hasAnyAuthority("GeneralApr", "Super")
-                    .anyRequest().authenticated());
+                    .anyRequest().authenticated())
                 // oauth2 설정
                 /* .oauth2Login(oauth2 -> oauth2
                     // 인증 성공시 호출
@@ -72,7 +72,7 @@ public class SecurityConfig {
                     // 사용자 정보 엔드포인트를 설정하고 정보를 처리할 서비스 지정
                     .userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService()))) */
                     // UsernamePasswordAuthenticationFilter 이전에 실행
-                http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
     @Bean

@@ -39,11 +39,11 @@ public class CommentController {
         }
         comvo.setUser_idx(user_idx);
         // 파일 업로드를 했을때
-        if(comvo.getFile() != null && !comvo.getFile().isEmpty()){
+        if(file != null && file.isEmpty()){
             // 생성자에 파일과 경로(폴더명)
-            FileUploadController fileUploadController = new FileUploadController(comvo.getFile(), "comment");
+            FileUploadController fileUploadController = new FileUploadController(file, "comment");
             // 파일 업로드 (결과는 datavo로 받음)
-            dvo = fileUploadController.FileUpload();
+            dvo = fileUploadController.fileUpload();
             // 업로드 성공시
             if(dvo.isSuccess()){
                 // 파일명을 넣는다.
@@ -54,9 +54,6 @@ public class CommentController {
                 comvo.setComment_file("http://localhost8080/api/comment/"+dvo.getData().toString());
                 // comment_file은 file의 url 주소가 들어간다.
                 // 프론트에서 src 속성에 comment_file의 값을 넣으면 화면에 이미지 출력됨.
-                
-                // commentvo의 file null로 초기화
-                comvo.setFile(null);
             }else{
                 return dvo;
             }
@@ -74,17 +71,17 @@ public class CommentController {
     }
     
     @PutMapping("/update")
-    public DataVO updateComment(CommentVO comvo){
+    public DataVO updateComment(@ModelAttribute CommentVO comvo, @RequestParam MultipartFile file){
         DataVO dvo = new DataVO();
         String comment_idx = comvo.getComment_idx();
         CommentVO oldcvo = commentService.getCommentDetail(comment_idx);
-        if(comvo.getFile() != null){
-            if(!comvo.getFile().getOriginalFilename().equals(oldcvo.getComment_file())){
-                FileUploadController fileUploadController = new FileUploadController(comvo.getFile(), "comment");
+        if(file != null && !file.isEmpty()){
+            if(file.getOriginalFilename().equals(oldcvo.getComment_file())){
+                FileUploadController fileUploadController = new FileUploadController(file, "comment");
                 if(oldcvo.getComment_file() != null){
-                    dvo = fileUploadController.FileUpdate(oldcvo.getComment_file());
+                    dvo = fileUploadController.fileUpdate(oldcvo.getComment_file());
                 }else{
-                    dvo = fileUploadController.FileUpload();
+                    dvo = fileUploadController.fileUpload();
                 }
                 comvo.setComment_file(dvo.getData().toString());
             }
@@ -100,6 +97,31 @@ public class CommentController {
             dvo.setSuccess(false);
             dvo.setMessage("댓글 수정 실패");
         }
+        return dvo;
+    }
+    
+    // 댓글 삭제
+    @PutMapping("/delete")
+    public DataVO deleteComment(@RequestBody CommentVO comvo){
+        DataVO dvo = new DataVO();
+        if(commentService.putCommentDelete(comvo)>0){
+            if(comvo.getComment_file_name() != null || !comvo.getComment_file_name().isBlank()){
+                FileUploadController fileUploadController = new FileUploadController(null, "comment");
+                dvo = fileUploadController.fileDelete(comvo.getComment_file_name());
+                if(dvo.isSuccess()){
+                    dvo.setMessage("댓글 및 파일 삭제 완료");
+                    return dvo;
+                }
+                dvo.setSuccess(true);
+                // 수정 요망 !!!!!!!!!!
+                dvo.setMessage("댓글 삭제 성공 & 파일 삭제 실패");
+            }
+            dvo.setSuccess(true);
+            dvo.setMessage("댓글 삭제 완료");
+            return dvo;
+        }
+        dvo.setSuccess(false);
+        dvo.setMessage("댓글 삭제 실패");
         return dvo;
     }
 }

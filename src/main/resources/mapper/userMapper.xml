@@ -49,13 +49,13 @@
     </update>
 
     <!-- 회원가입 -->
-    <insert id="postUserJoin" parameterType="UserVO">
+    <!-- <insert id="postUserJoin" parameterType="UserVO">
         INSERT INTO user_db.user_info_tbl (
-            user_id, user_pw, user_name, user_nickname, user_profile, user_profile_name, user_gender, user_email, user_phone, user_reg_date
+            user_id, user_level_idx, user_pw, user_name, user_nickname, user_profile, user_profile_name, user_gender, user_email, user_phone, user_reg_date
         ) VALUES (
-            #{user_id}, #{user_pw}, #{user_name}, #{user_nickname}, #{user_profile}, #{user_profile_name}, #{user_gender}, #{user_email}, #{user_phone}, CURRENT_DATE
+            #{user_id}, #{user_level_idx}, #{user_pw}, #{user_name}, #{user_nickname}, #{user_profile}, #{user_profile_name}, #{user_gender}, #{user_email}, #{user_phone}, CURRENT_DATE
         )
-    </insert>
+    </insert> -->
 
     <!-- 비밀번호 확인 -->
     <select id="getUserPassWord" parameterType="String" resultType="String">

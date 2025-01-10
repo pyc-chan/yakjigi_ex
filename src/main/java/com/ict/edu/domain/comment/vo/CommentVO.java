@@ -2,16 +2,12 @@ package com.ict.edu.domain.comment.vo;
 
 import java.time.LocalDate;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import lombok.Data;
 
 @Data
 public class CommentVO {
-    private MultipartFile file = null;
-    
     private String comment_idx = "";
     private String user_idx = null;
     private String admin_idx = null;

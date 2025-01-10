@@ -25,9 +25,6 @@ public interface UserMapper {
     // 비밀번호 수정
     int putUserPassWord(UserVO uvo);
     
-    // 회원가입
-    int postUserJoin(UserVO uvo);
-    
     // 비밀번호 확인
     String getUserPassWord(String user_id);
 }

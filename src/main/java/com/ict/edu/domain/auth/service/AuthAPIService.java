@@ -49,11 +49,9 @@ public class AuthAPIService {
                 Map<String, String> newMap = new HashMap<>();
                 newMap.put("role", role);
                 newMap.put("user_id", user_id);
-                token = generateToken(newMap);
                 dvo.setUserDetails(userDetails);
                 dvo.setSuccess(true);
                 dvo.setMessage("토큰 인증 성공");
-                dvo.setToken(token);    
             }else{
                 dvo.setSuccess(false);
                 dvo.setMessage("토큰 인증 실패");
