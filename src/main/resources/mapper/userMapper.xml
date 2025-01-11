@@ -63,5 +63,11 @@
         FROM user_db.user_info_tbl
         WHERE user_id = #{user_id}
     </select>
-
+    
+    <!-- 닉네임 호출 -->
+    <select id="getUserNickName" parameterType="String" resultType="String">
+        select user_nickname
+        from user_db.user_info_tbl
+        where user_idx = #{user_idx}
+    </select>
 </mapper>

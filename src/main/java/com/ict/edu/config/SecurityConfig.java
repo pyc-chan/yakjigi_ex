@@ -60,10 +60,11 @@ public class SecurityConfig {
                     .requestMatchers(
                         "/api/**", "/oauth/**", 
                         "/fna/**", "/download/**", "/auth/**", 
-                        "/qna/**" )
+                        "/qna/**", "/page/**" )
                         .permitAll()
                     // 인증 필요
                     .requestMatchers("/admin/**").hasAnyAuthority("GeneralApr", "Super")
+                    .requestMatchers("/super/**").hasAuthority("Super")
                     .anyRequest().authenticated())
                 // oauth2 설정
                 /* .oauth2Login(oauth2 -> oauth2

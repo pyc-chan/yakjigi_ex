@@ -61,5 +61,10 @@ public class UserServiceImpl implements UserService{
     public String getUserPassWord(String user_id) {
         return authMapper.getUserPassWord(user_id);
     }
+
+    @Override
+    public String getUserNickName(String user_idx) {
+        return userMapper.getUserNickName(user_idx);
+    }
     
 }

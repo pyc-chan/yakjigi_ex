@@ -9,7 +9,7 @@ import com.ict.edu.domain.Sub303.vo.Sub303VO;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/page")
 public class Sub303Controller {
     
     @Autowired

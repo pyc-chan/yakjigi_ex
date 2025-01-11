@@ -40,8 +40,12 @@ public class AdminServiceImpl implements AdminService{
     
     // 관리자 삭제
     @Override
-    public int deleteAdmin(AdminVO avo) {
-        return adminMapper.deleteAdmin(avo);
+    public int deleteAdmin(String admin_idx) {
+        return adminMapper.deleteAdmin(admin_idx);
+    }
+    
+    public String getAdminNickName(String admin_idx){
+        return adminMapper.getAdminNickName(admin_idx);
     }
     
     // 유저 목록

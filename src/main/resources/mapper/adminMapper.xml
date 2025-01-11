@@ -58,7 +58,8 @@
         where admin_idx = #{admin_idx}
     </update>
     
-    <update id="deleteAdmin" parameterType="AdminVO">
+    <!-- 관리자 삭제 -->
+    <update id="deleteAdmin" parameterType="String">
         update admin_db.admin_info_tbl
         <set>
             admin_out = 1
@@ -66,10 +67,12 @@
         where admin_idx = #{admin_idx}
     </update>
     
+    <!-- 유저 리스트 -->
     <select id="getUserList" resultType="UserVO">
         select * from user_db.user_info_db order by user_idx desc
     </select>
     
+    <!-- 로그인 -->
     <select id="getAdminLogin" resultType="AdminVO" parameterType="String">
         select * from admin_db.admin_info_tbl where admin_id = #{admin_id}
     </select>
@@ -81,4 +84,10 @@
         WHERE admin_id = #{user_id}
     </select>
     
+    <!-- 관리자 닉네임 호출 -->
+    <select id="getAdminNickName" parameterType="String" resultType="String">
+        select admin_nickname
+        form admin_db.admin_info_tbl
+        where admin_idx = #{admin_idx}
+    </select>
 </mapper>

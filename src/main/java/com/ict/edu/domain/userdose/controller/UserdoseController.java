@@ -31,7 +31,7 @@ import com.ict.edu.domain.userdose.service.UserdoseService;
 import com.ict.edu.domain.userdose.vo.UserdoseVO;
 
 @RestController
-@RequestMapping("/api") // 기본 매핑 경로 설정
+@RequestMapping("/page") // 기본 매핑 경로 설정
 public class UserdoseController {
 
     @Autowired

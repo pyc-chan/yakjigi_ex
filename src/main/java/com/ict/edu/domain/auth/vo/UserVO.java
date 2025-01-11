@@ -27,6 +27,7 @@ public class UserVO implements UserDetails{
     private String user_pw = null;
     private String user_profile = "";
     private String user_profile_name = "";
+    private String user_lisence_path = null;
     private LocalDate user_reg_date = LocalDate.of(2000, 1, 1);
     
     // SNS에서 가져오는 데이터는 name에 저장하고 nickname을 설정하게 함

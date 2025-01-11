@@ -9,11 +9,15 @@ import java.util.Random;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.ict.edu.common.util.FileUploadController;
 import com.ict.edu.common.util.GravatarService;
 import com.ict.edu.domain.admin.service.AdminService;
 import com.ict.edu.domain.auth.service.AuthAPIService;
@@ -148,13 +152,26 @@ public class AuthController {
     
     // 회원가입
     @PostMapping("/join")
-    public DataVO userJoin(@RequestBody UserVO uvo){
+    public DataVO userJoin(@RequestParam MultipartFile file, @ModelAttribute UserVO uvo){
         DataVO dvo = new DataVO();
         System.out.println("회원가입 컨트롤러 도착");
         uvo.setUser_pw(BCrypt.hashpw(uvo.getUser_pw(), BCrypt.gensalt()));
         GravatarService gravatarService = new GravatarService();
         String profileUrl = gravatarService.getGravatarUrl(uvo.getUser_id());
         uvo.setUser_profile(profileUrl);
+        if(uvo.getUser_level_idx().equals("2")){
+            if(file != null && !file.isEmpty()){
+                FileUploadController fileUploadController = new FileUploadController(file, "lisence");
+                dvo = fileUploadController.fileUpload();
+                if(!dvo.isSuccess()){
+                    System.out.println("면허 업로드 실패");
+                    return dvo;
+                }
+                uvo.setUser_lisence_path("/download/api/lisence/"+dvo.getData().toString());
+            }
+        }
+        
+        
         /* System.out.println("DB가기 전");
         System.out.println("사용자 인덱스: " + uvo.getUser_idx());
         System.out.println("사용자 ID: " + uvo.getUser_id());

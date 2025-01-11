@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ict.edu.common.util.UserInfoService;
 import com.ict.edu.domain.auth.vo.DataVO;
 import com.ict.edu.domain.comment.service.CommentService;
 import com.ict.edu.domain.comment.vo.CommentVO;
@@ -40,9 +41,15 @@ public class QnaController {
     public DataVO getQnaDetail(String Qna_idx){
         DataVO dvo = new DataVO();
         QnaVO qvo = qnaService.getQnaDetail(Qna_idx);
+        UserInfoService userInfoService = new UserInfoService();
+        qvo.setAdmin_nickname(userInfoService.getAdminNickName(qvo.getAdmin_idx()));
+        qvo.setUser_nickname(userInfoService.getUserNickName(qvo.getUser_idx()));
         Map<String, Object> map = new HashMap<>();
         if(qvo.getQna_answer_stat()>0){
             List<CommentVO> list = commentService.getCommentList(Comment_board.QNA, Qna_idx);
+            for (CommentVO commentVO : list) {
+                commentVO.setUser_nickname(userInfoService.getUserNickName(commentVO.getUser_idx()));
+            }
             map.put("list",list);
         }
         map.put("qvo", qvo);

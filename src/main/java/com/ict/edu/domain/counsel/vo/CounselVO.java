@@ -6,8 +6,8 @@ import lombok.Data;
 
 @Data
 public class CounselVO {
-    private int counsel_idx; // 상담 고유 인덱스
-    private int user_idx; // 사용자 고유 인덱스
+    private String counsel_idx; // 상담 고유 인덱스
+    private String user_idx; // 사용자 고유 인덱스
     private String question_title = ""; // 상담 질문 제목
     private String question_content = ""; // 상담 질문 내용
     private LocalDate question_date; // 상담 질문 등록일
@@ -16,5 +16,8 @@ public class CounselVO {
     private LocalDate response_date; // 상담 답변 등록일
     private LocalDate counsel_out_date; // 상담 답변 삭제일
     private int counsel_delete = 0; // 상담 삭제 여부 (0: 활성, 1: 삭제)
+    private String user_nickname = "";
+    private String user_response_idx = "";
+    private String user_response_nickname = "";
 }
 

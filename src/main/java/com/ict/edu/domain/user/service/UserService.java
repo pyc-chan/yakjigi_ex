@@ -31,6 +31,7 @@ public interface UserService {
     // 비밀번호 확인
     String getUserPassWord(String user_id);
     
-    
+    // 닉네임 확인
+    String getUserNickName(String user_idx);
     
 }

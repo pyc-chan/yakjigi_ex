@@ -10,6 +10,7 @@ import lombok.Data;
 public class CommentVO {
     private String comment_idx = "";
     private String user_idx = null;
+    private String user_nickname = null;
     private String admin_idx = null;
     private String comment_content = null;
     private LocalDate comment_reg_date = LocalDate.now();

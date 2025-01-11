@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ict.edu.common.util.UserInfoService;
 import com.ict.edu.domain.counsel.service.CounselService;
 import com.ict.edu.domain.counsel.vo.CounselVO;
 
@@ -22,7 +23,8 @@ public class CounselController {
 
     @Autowired
     private CounselService counselService;
-
+    
+    
     // 상담 리스트
     @GetMapping("/list")
     public List<CounselVO> getCounselList() {
@@ -32,7 +34,11 @@ public class CounselController {
     // 상담 디테일
     @GetMapping("/detail")
     public CounselVO getCounselDetail(@RequestParam String counsel_idx) {
-        return counselService.getCounselDetail(counsel_idx);
+        CounselVO counvo = counselService.getCounselDetail(counsel_idx);
+        UserInfoService userInfoService = new UserInfoService();
+        counvo.setUser_nickname(userInfoService.getUserNickName(counvo.getUser_idx()));
+        counvo.setUser_response_nickname(userInfoService.getUserNickName(counvo.getUser_response_idx()));
+        return counvo;
     }
 
     // 상담 작성

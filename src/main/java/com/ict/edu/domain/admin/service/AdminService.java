@@ -20,7 +20,10 @@ public interface AdminService {
     int putAdminUpdate(AdminVO avo);
     
     // 관리자 삭제
-    int deleteAdmin(AdminVO avo);
+    int deleteAdmin(String admin_idx);
+    
+    // 관리자 닉네임 호출
+    String getAdminNickName(String admin_idx);
     
     // 유저 리스트
     List<UserVO> getUserList();
