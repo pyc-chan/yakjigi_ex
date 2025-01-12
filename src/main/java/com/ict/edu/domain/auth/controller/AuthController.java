@@ -29,7 +29,10 @@ import com.ict.edu.domain.auth.vo.UserBanVO;
 import com.ict.edu.domain.auth.vo.UserVO;
 import com.ict.edu.domain.user.service.UserService;
 
+import lombok.extern.slf4j.Slf4j;
 
+
+@Slf4j
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -67,6 +70,8 @@ public class AuthController {
                     request.put("role","Super");
                 }
                 request.put("user_id", avo.getAdmin_id());
+                request.put("admin_idx", avo.getAdmin_idx());
+                log.info("어드민 idx : "+request.get("admin_idx"));
                 String token = authAPIService.generateToken(request);
                 dvo.setData(token);
                 dvo.setSuccess(true);
@@ -115,6 +120,7 @@ public class AuthController {
                 dvo.setMessage("토큰 생성 완료");
             }
         }else{
+            log.info("관리자 로그인 실패");
             dvo.setSuccess(false);
             dvo.setMessage("아이디 혹은 비밀번호가 올바르지 않습니다.");
         }
@@ -152,7 +158,7 @@ public class AuthController {
     
     // 회원가입
     @PostMapping("/join")
-    public DataVO userJoin(@RequestParam MultipartFile file, @ModelAttribute UserVO uvo){
+    public DataVO userJoin(@RequestParam(value = "file", required = false) MultipartFile file, @ModelAttribute UserVO uvo){
         DataVO dvo = new DataVO();
         System.out.println("회원가입 컨트롤러 도착");
         uvo.setUser_pw(BCrypt.hashpw(uvo.getUser_pw(), BCrypt.gensalt()));
@@ -243,8 +249,9 @@ public class AuthController {
     }
     
     // 아이디 중복 확인
-    @GetMapping("/idchk")
-    public DataVO getIDChk(String user_id){
+    @PostMapping("/idchk")
+    public DataVO getIDChk(@RequestBody UserVO uvo){
+        String user_id = uvo.getUser_id();
         DataVO dvo = userDetailService.getIDChk(user_id);
         return dvo;
     }

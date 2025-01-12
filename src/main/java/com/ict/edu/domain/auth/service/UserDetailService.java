@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,7 +20,9 @@ import com.ict.edu.domain.auth.vo.DataVO;
 import com.ict.edu.domain.auth.vo.UserBanVO;
 import com.ict.edu.domain.auth.vo.UserVO;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class UserDetailService implements UserDetailsService{
     @Autowired
@@ -34,7 +38,11 @@ public class UserDetailService implements UserDetailsService{
         if (uvo == null) {
             throw new UsernameNotFoundException("없는 아이디 입니다.");
         }
-        return new User(uvo.getUser_id(), uvo.getUser_pw(), new ArrayList<>());
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        if(uvo.getUser_level_idx().equals("3")){
+            authorities.add(new SimpleGrantedAuthority("ROLE_ProApr"));
+        }
+        return new User(uvo.getUser_id(), uvo.getUser_pw(), authorities);
     }
     
     // DB에서 아이디로 정보 추출
@@ -122,15 +130,14 @@ public class UserDetailService implements UserDetailsService{
     // 아이디 중복 확인
     public DataVO getIDChk(String user_id){
         DataVO dvo = new DataVO();
-        if(adminMapper.getAdminIDChk(user_id) == 0){
-            if(authMapper.getUserIDChk(user_id) == 0){
-                dvo.setSuccess(true);
-                dvo.setMessage("중복이 없습니다.");
-                return dvo;
-            }
+        log.info(user_id);
+        if (adminMapper.getAdminIDChk(user_id) > 0 || authMapper.getUserIDChk(user_id) > 0) {
+            dvo.setSuccess(false);
+            dvo.setMessage("중복된 아이디가 있습니다.");
+        } else {
+            dvo.setSuccess(true);
+            dvo.setMessage("중복이 없습니다.");
         }
-        dvo.setSuccess(false);
-        dvo.setMessage("중복된 아이디가 있습니다.");
         return dvo;
     }
     

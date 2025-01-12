@@ -1,9 +1,6 @@
 package com.ict.edu.domain.userdose.controller;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -12,10 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,14 +25,15 @@ import org.springframework.http.MediaType;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ict.edu.domain.userdose.service.UserdoseService;
+import com.ict.edu.domain.userdose.vo.PayloadVO;
 import com.ict.edu.domain.userdose.vo.UserdoseVO;
 
 @RestController
 @RequestMapping("/page") // 기본 매핑 경로 설정
 public class UserdoseController {
-
+    
     @Autowired
-    private UserdoseService mybasicboardlogService;
+    private UserdoseService userdoseService;
 
     // JSON 이미지 렌더링
     @GetMapping("/proxy/image")
@@ -60,7 +58,6 @@ public class UserdoseController {
             @RequestParam(required = false, defaultValue = "") String mediNames) {
 
         try {
-            System.out.println("데이터 값: "+ mediNames);
             ClassPathResource resource = new ClassPathResource("data/all_medi_data_2.json");
             String data = new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
 
@@ -90,20 +87,39 @@ public class UserdoseController {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
-        
+      
+    }
+
+    // json 데이터 읽어오기
+    @GetMapping("/medi-data/all")
+    public ResponseEntity<List<Map<String, Object>>> getAllMediData() {
+        try {
+            ClassPathResource resource = new ClassPathResource("data/all_medi_data_2.json");
+            String data = new String(resource.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<Map<String, Object>> items = objectMapper.readValue(data, new TypeReference<List<Map<String, Object>>>() {});
+
+            return ResponseEntity.ok(items);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     // 캘린더(디비 리스트)
-    @GetMapping("/userdoselist")
+    @GetMapping("/mybasicboardlog")
     public List<UserdoseVO> getUserDoses(@RequestParam String userId) {
-        return mybasicboardlogService.getUserDoses(userId);
+        List<UserdoseVO> doses = userdoseService.getUserDoses(userId);
+        System.out.println("반환값: " + doses);
+        return doses;
     }
 
     // 디비 삭제
-    @DeleteMapping("/userdosedelete")
+    @DeleteMapping("/mybasicboardlog")
     public ResponseEntity<Void> deleteDose(@RequestParam String userId, @RequestParam String date) {
         try {
-            mybasicboardlogService.deleteDose(userId, date); // 삭제 서비스 호출
+            userdoseService.deleteDose(userId, date); // 삭제 서비스 호출
             return ResponseEntity.ok().build(); // 성공 응답 반환
         } catch (Exception e) {
             e.printStackTrace();
@@ -112,27 +128,43 @@ public class UserdoseController {
     }
 
     // 상세 보기
-    @GetMapping("/userdose/details")
-    public List<UserdoseVO> getDetailsByDate(@RequestParam String date, @RequestParam String userId) {
+    @GetMapping("/mybasicboardlog/details")
+    public List<UserdoseVO> getDetailsByDateAndUser(
+        @RequestParam String date,
+        @RequestParam String userId
+    ) {
+        return userdoseService.getDetailsByDateAndUser(date, userId);
+    }
+
+
+    // 저장하기
+    @PostMapping("/receivepayload")
+    public ResponseEntity<String> receivePayload(@RequestBody PayloadVO payloadVO) {
         try {
-            return mybasicboardlogService.getDetailsByDateAndUser(date, userId);
+            System.out.println("Received Payload: " + payloadVO);
+
+            payloadVO.getMedications().forEach(medication -> {
+                System.out.println("Medication: " + medication);
+            });
+
+            userdoseService.saveMyBasicBoardLog(payloadVO);
+
+            return ResponseEntity.ok("Payload received successfully!");
         } catch (Exception e) {
             e.printStackTrace();
-            return null; // 에러 처리 필요
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing payload");
         }
     }
 
-    
-    /* // 디비 저장
-    @PostMapping("/mybasicboardlog/save")
-    public ResponseEntity<Void> saveMyBasicBoardLog(@RequestBody UserdoseVO requestData) {
+    // 복용 기록 수정
+    @PutMapping("/mybasicboardlog/edit")
+    public ResponseEntity<String> updateDose(@RequestBody PayloadVO payloadVO) {
         try {
-            System.out.println("Received data: " + requestData); // 디버깅 로그
-            mybasicboardlogService.saveMyBasicBoardLog(requestData);
-            return ResponseEntity.ok().build();
+            userdoseService.updateDose(payloadVO);
+            return ResponseEntity.ok("Data updated successfully!");
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.status(500).body("Error updating data: " + e.getMessage());
         }
-    } */
+    }
 }

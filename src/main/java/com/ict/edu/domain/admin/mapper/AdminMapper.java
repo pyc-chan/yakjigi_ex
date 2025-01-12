@@ -38,5 +38,5 @@ public interface AdminMapper {
     public AdminVO getAdminLogin(String admin_id);
     
     // 관리자 아이디 중복 확인
-    public int getAdminIDChk(String user_id);
+    public int getAdminIDChk(String admin_id);
 }

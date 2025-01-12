@@ -2,6 +2,9 @@ package com.ict.edu.domain.admin.service;
 
 import java.util.List;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import com.ict.edu.domain.auth.vo.AdminVO;
 import com.ict.edu.domain.auth.vo.UserVO;
 
@@ -33,4 +36,6 @@ public interface AdminService {
     
     // 관리자 로그인
     AdminVO getAdminLogin(String admin_id);
+    
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
 }

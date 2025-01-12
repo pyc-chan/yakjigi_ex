@@ -63,8 +63,8 @@ public class SecurityConfig {
                         "/qna/**", "/page/**" )
                         .permitAll()
                     // 인증 필요
-                    .requestMatchers("/admin/**").hasAnyAuthority("GeneralApr", "Super")
-                    .requestMatchers("/super/**").hasAuthority("Super")
+                    .requestMatchers("/admin/**").hasAnyAuthority("ROLE_GeneralApr", "ROLE_Super")
+                    .requestMatchers("/super/**").hasAuthority("ROLE_Super")
                     .anyRequest().authenticated())
                 // oauth2 설정
                 /* .oauth2Login(oauth2 -> oauth2

@@ -16,6 +16,9 @@ import com.ict.edu.domain.admin.service.AdminService;
 import com.ict.edu.domain.auth.vo.AdminVO;
 import com.ict.edu.domain.auth.vo.DataVO;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("/super")
 public class SuperAdminController {
@@ -27,6 +30,7 @@ public class SuperAdminController {
     @GetMapping("/list")
     public DataVO getAdminList(){
         DataVO dvo = new DataVO();
+        log.info("Super 컨트롤러 도착");
         List<AdminVO> list = adminService.getAdminList();
         if(list != null && !list.isEmpty()){
             dvo.setData(list);
@@ -57,6 +61,7 @@ public class SuperAdminController {
     @PostMapping("/join")
     public DataVO postAdminJoin(@RequestBody AdminVO avo){
         DataVO dvo = new DataVO();
+        log.info("컨트롤러 도착");
         if(adminService.postAdminJoin(avo)>0){
             dvo.setSuccess(true);
             dvo.setMessage("가입 성공");

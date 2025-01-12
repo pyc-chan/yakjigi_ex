@@ -1,12 +1,15 @@
 package com.ict.edu.domain.counsel.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ict.edu.common.util.UserInfoService;
+import com.ict.edu.domain.auth.vo.DataVO;
 import com.ict.edu.domain.counsel.service.CounselService;
 import com.ict.edu.domain.counsel.vo.CounselVO;
 
@@ -27,42 +30,90 @@ public class CounselController {
     
     // 상담 리스트
     @GetMapping("/list")
-    public List<CounselVO> getCounselList() {
-        return counselService.getCounselList();
+    public DataVO getCounselList() {
+        DataVO dvo = new DataVO();
+        Map <String, Object> result = new HashMap<>();
+        List<CounselVO> list = counselService.getCounselList();
+        result.put("list", list);
+        result.put("size", list.size());
+        dvo.setData(result);
+        dvo.setSuccess(true);
+        dvo.setMessage(null);
+        return dvo;
     }
 
     // 상담 디테일
     @GetMapping("/detail")
-    public CounselVO getCounselDetail(@RequestParam String counsel_idx) {
+    public DataVO getCounselDetail(@RequestParam String counsel_idx) {
+        DataVO dvo = new DataVO();
         CounselVO counvo = counselService.getCounselDetail(counsel_idx);
         UserInfoService userInfoService = new UserInfoService();
         counvo.setUser_nickname(userInfoService.getUserNickName(counvo.getUser_idx()));
         counvo.setUser_response_nickname(userInfoService.getUserNickName(counvo.getUser_response_idx()));
-        return counvo;
+        dvo.setData(counvo);
+        dvo.setSuccess(true);
+        dvo.setMessage(null);
+        return dvo;
     }
 
     // 상담 작성
     @PostMapping("/create")
-    public int postCounselJoin(@RequestBody CounselVO counvo) {
-        return counselService.postCounselJoin(counvo);
+    public DataVO postCounselJoin(@RequestBody CounselVO counvo) {
+        DataVO dvo = new DataVO();
+        if(counselService.postCounselJoin(counvo)>0){
+            dvo.setData(counvo);
+            dvo.setSuccess(true);
+            dvo.setMessage(null);
+        }else{
+            dvo.setSuccess(false);
+            dvo.setMessage("");
+        }
+        return dvo;
     }
 
     // 상담 수정
     @PutMapping("/update")
-    public int putCounselUpdate(@RequestBody CounselVO counvo) {
-        return counselService.putCounselUpdate(counvo);
+    public DataVO putCounselUpdate(@RequestBody CounselVO counvo) {
+        DataVO dvo = new DataVO();
+        if(counselService.putCounselUpdate(counvo)>0){
+            dvo.setData(counvo);
+            dvo.setSuccess(true);
+            dvo.setMessage(null);
+        }else{
+            dvo.setSuccess(false);
+            dvo.setMessage("");
+        }
+        return dvo;
     }
 
     // 상담 삭제
     @PutMapping("/delete")
-    public int putCounselDelete(@RequestBody CounselVO counvo) {
-        return counselService.putCounselDelete(counvo);
+    public DataVO putCounselDelete(@RequestBody CounselVO counvo) {
+        DataVO dvo = new DataVO();
+        if(counselService.putCounselDelete(counvo)>0){
+            dvo.setData(counvo);
+            dvo.setSuccess(true);
+            dvo.setMessage(null);
+        }else{
+            dvo.setSuccess(false);
+            dvo.setMessage("");
+        }
+        return dvo;
     }
 
     // 상담 응답 작성
     @PutMapping("/comment")
-    public int putCounselCommentJoin(@RequestBody CounselVO counvo) {
-        return counselService.putCounselCommentJoin(counvo);
+    public DataVO putCounselCommentJoin(@RequestBody CounselVO counvo) {
+        DataVO dvo = new DataVO();
+        if(counselService.putCounselCommentJoin(counvo)>0){
+            dvo.setData(counvo);
+            dvo.setSuccess(true);
+            dvo.setMessage(null);
+        }else{
+            dvo.setSuccess(false);
+            dvo.setMessage("");
+        }
+        return dvo;
     }
     
     

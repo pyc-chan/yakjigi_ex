@@ -4,11 +4,11 @@
  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <!-- namespace는 반드시 mapper 위치로 설정해야 된다. -->
-<mapper namespace="com.ict.edu.domain.counsel.mapper">
+<mapper namespace="com.ict.edu.domain.counsel.mapper.CounselMapper">
 
     <!-- 상담 리스트 -->
     <select id="getCounselList" resultType="CounselVO">
-        SELECT * FROM board_db.counsel_tbl WHERE counsel_delete = 0
+        SELECT counsel_idx, question_title, counsel_open, question_date FROM board_db.counsel_tbl WHERE counsel_delete = 0
     </select>
 
     <!-- 상담 디테일 -->
