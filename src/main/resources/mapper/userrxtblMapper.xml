@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- namespacesms 반드시 mapper 위치로 설정해야 된다. -->
+<mapper namespace="com.ict.edu.domain.userrxtbl.mapper.UserRxTblMapper">
+	<select id="getUserRxTblList" resultType="UserRxTblVO">
+		SELECT post_num, MIN(user_idx) AS user_idx, MIN(rx_date) AS rx_date, MIN(rx_phar_name) AS rx_phar_name, 
+			MIN(drug_idx) AS drug_idx, MIN(phar_idx) AS phar_idx, MIN(rx_other) AS rx_other, 
+			MIN(rx_photo) AS rx_photo
+		FROM user_rx_tbl 
+		GROUP BY post_num 
+		ORDER BY rx_date desc
+	</select>
+
+	<select id="getUserRxTblById" parameterType="String" resultType="UserRxTblVO">
+		select * from user_rx_tbl where post_num = #{post_num}
+	</select>
+
+	<delete id="getUserRxTblDelete" parameterType="String">
+		delete from user_rx_tbl where post_num = #{post_num}
+	</delete>
+	
+	<update id="getUserRxTblUpdate" parameterType="UserRxTblVO">
+		update user_rx_tbl
+		set user_idx = #{user_idx},rx_date=#{rx_date}, rx_phar_name=#{rx_phar_name}, drug_idx=#{drug_idx}, phar_idx=#{phar_idx}, rx_other=#{rx_other}, rx_photo=#{rx_photo}
+		where rx_idx = #{rx_idx}
+	</update>
+
+	<insert id="getUserRxTblWrite" parameterType="UserRxTblVO">
+		INSERT INTO user_rx_tbl (
+			post_num,
+			user_idx,
+			rx_date,
+			rx_phar_name,
+			rx_pst_name,
+			dose_way,
+			drug_idx,
+			phar_idx,
+			rx_other,
+			rx_photo
+		) VALUES (
+			#{post_num},      <!-- 게시글 번호 -->
+			#{user_idx},      <!-- 고유 인덱스 -->
+			#{rx_date},       <!-- 진료일 -->
+			#{rx_phar_name},  <!-- 약국명 -->
+			#{rx_pst_name},   <!-- 약사명 -->
+			#{dose_way},      <!-- 복용 방법 -->
+			#{drug_idx},      <!-- 약품 고유 인덱스 -->
+			#{phar_idx},      <!-- 약국 고유 인덱스 -->
+			#{rx_other},      <!-- 기타 사항 -->
+			#{rx_photo}       <!-- 처방전 사진 -->
+		)
+	</insert>
+
+
+
+
+
+
+
+</mapper>
+
+
+
+
+
+

@@ -67,11 +67,11 @@ public class SecurityConfig {
                     .requestMatchers("/super/**").hasAuthority("ROLE_Super")
                     .anyRequest().authenticated())
                 // oauth2 설정
-                /* .oauth2Login(oauth2 -> oauth2
+                .oauth2Login(oauth2 -> oauth2
                     // 인증 성공시 호출
                     .successHandler(oAuth2AuthenticationSuccessHandler())
                     // 사용자 정보 엔드포인트를 설정하고 정보를 처리할 서비스 지정
-                    .userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService()))) */
+                    .userInfoEndpoint(userInfo -> userInfo.userService(oAuth2UserService())))
                     // UsernamePasswordAuthenticationFilter 이전에 실행
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();

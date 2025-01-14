@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<!-- namespacesms 반드시 mapper 위치로 설정해야 된다. -->
+<mapper namespace="com.ict.edu.domain.notice.mapper.NoticeMapper">
+	<select id="getNoticeList" resultType="NoticeVO">
+		select * from board_db.notice_tbl order by notice_idx asc
+	</select>
+
+	<select id="getNoticeDetail" parameterType="String"  resultType="NoticeVO" >
+		select * from board_db.notice_tbl where notice_idx = #{notice_idx}
+	</select>
+</mapper>
+
+
+
+
+
+
